@@ -1,0 +1,31 @@
+/* Estilos personalizados */
+body {
+    padding-top: 56px; /* Ajusta el cuerpo de la página para la barra de navegación fija */
+}
+
+.sidebar {
+    background-color: #f8f9fa; /* Color de fondo gris claro para la barra lateral */
+    border-right: 1px solid #dee2e6; /* Borde derecho para separar del contenido principal */
+    height: 100vh; /* Altura completa de la barra lateral */
+}
+
+.sidebar-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 1rem;
+    text-transform: uppercase;
+    background-color: #e9ecef; /* Color de fondo gris claro para el encabezado de la barra lateral */
+    border-bottom: 1px solid #dee2e6; /* Borde inferior para el encabezado de la barra lateral */
+}
+
+.list-group-item {
+    padding: 0; /* Ajusta el padding para que los botones no tengan espacio adicional */
+}
+
+.list-group-item a {
+    text-decoration: none; /* Elimina el subrayado del texto */
+}
+
+.list-group-item a:hover {
+    text-decoration: none; /* Evita que el subrayado aparezca al pasar el mouse */
+}

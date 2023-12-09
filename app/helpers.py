@@ -13,3 +13,15 @@ def total_ranking(year, ranking):
     ]
 
     return serialized_results
+
+def get_info():
+    results = db.session.query(
+    YearResults.year,
+    db.func.max(YearResults.race_number).label('max_num_race')
+    ).group_by(YearResults.year).all()
+    serialized_results = [
+        {'year': row.year, 'races': row.max_num_race}
+        for row in results
+    ]
+
+    return serialized_results

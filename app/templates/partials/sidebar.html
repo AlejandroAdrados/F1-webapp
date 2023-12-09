@@ -1,0 +1,77 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<div class="col-lg-3 col-md-4 sidebar">
+    <div class="sidebar-sticky">
+        <h5 class="sidebar-heading">Menú</h5>
+<ul class="list-group">
+    <li class="list-group-item">
+        <a href="#" class="btn btn-light w-100 d-flex justify-content-between align-items-center" id="clasificationLink">Clasificación</a>
+    </li>
+    <li class="list-group-item">
+        <a href="#" data-bs-toggle="collapse" data-bs-target="#infoPiloto" class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-element" id="pilotoCollapse">
+            Información de un piloto
+            <span><i class="bi bi-chevron-down"></i></span>
+        </a>
+        <ul class="list-group collapse" id="infoPiloto">
+            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Perfil</a></li>
+            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Estadísticas</a></li>
+        </ul>
+    </li>
+    <li class="list-group-item">
+        <a href="#" data-bs-toggle="collapse" data-bs-target="#graphs" class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-element" id="graphsCollapse">
+            Grafos
+            <span><i class="bi bi-chevron-down"></i></span>
+        </a>
+        <ul class="list-group collapse" id="graphs">
+            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Crear grafo ponderado por posición</a></li>
+            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Crear grafo ponderado por importancia</a></li>
+            <!-- Agrega más subsecciones según sea necesario -->
+        </ul>
+    </li>
+    <li class="list-group-item">
+        <a href="#" data-bs-toggle="collapse" data-bs-target="#metrics" class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-element" id="metricsCollapse">
+            Métricas
+            <span><i class="bi bi-chevron-down"></i></span>
+        </a>
+        <ul class="list-group collapse" id="metrics">
+            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Resumen de métricas</a></li>
+            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Evolución de métricas</a></li>
+            <!-- Agrega más subsecciones según sea necesario -->
+        </ul>
+    </li>
+</ul>
+
+    </div>
+</div>
+
+<!-- Year/date Modal -->
+<div class="modal fade" id="seleccionModal" tabindex="-1" aria-labelledby="seleccionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seleccionModalLabel">Seleccionar Jornada y Año</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="seleccionForm">
+                    <div class="mb-3">
+                        <label for="jornada" class="form-label">Jornada</label>
+                        <select class="form-select" id="jornada" name="jornada">
+                            <!-- Opciones de jornada llenadas dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="anio" class="form-label">Año</label>
+                        <select class="form-select" id="anio" name="anio">
+                            <!-- Opciones de año llenadas dinámicamente -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>F1 webapp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'partials/navbar.html' %}
+
+    <!-- Contenido principal con sidebar -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            {% include 'partials/sidebar.html' %}
+
+            <!-- Contenido principal -->
+            <div class="col-lg-9 col-md-8">
+                <h1>Clasificación</h1>
+                <!-- Tabla para mostrar la clasificación -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaClasificacion">
+                        <!-- Aquí se llenará la tabla con los datos -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<!-- Scripts de Bootstrap y otros -->
+<!-- Los scripts de Bootstrap requieren jQuery y Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../static/js/navbar.js"></script>
+<script src="../static/js/sidebar.js"></script>
+
+<script>
+// Obtener los parámetros de la URL
+const urlParams = new URLSearchParams(window.location.search);
+const jornada = urlParams.get('jornada');
+const anio = urlParams.get('anio');
+
+$(document).ready(function() {
+    // Llamada GET a la API para obtener los datos de clasificación con los parámetros
+    $.get(`/api/results?jornada=${jornada}&anio=${anio}`, function(data) {
+        // Manejo de los datos recibidos para crear la tabla de clasificación
+        var tabla = '';
+        data.forEach(function(item) {
+            tabla += '<tr><td>' + item.driver_name + '</td><td>' + item.total_points + '</td></tr>';
+        });
+        // Insertar la tabla en el elemento con el ID 'tablaClasificacion'
+        $('#tablaClasificacion').html(tabla);
+    });
+});
+</script>
+</body>
+</html>

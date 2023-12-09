@@ -19,3 +19,7 @@ db = SQLAlchemy(app)
 from app.routes import app_routes
 # Registrar las rutas de la aplicación Flask y la API
 app.register_blueprint(app_routes)
+
+from app import models
+with app.app_context():
+    db.create_all()
