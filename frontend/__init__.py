@@ -14,3 +14,8 @@ app_dash.title = 'F1 Dashboard'
 
 from frontend.layout import layout
 app_dash.layout = layout
+print("Layout cargado")
+
+from frontend.callbacks import register_callbacks
+register_callbacks(app_dash)
+print("Callbacks registrados")

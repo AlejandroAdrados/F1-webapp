@@ -8,14 +8,7 @@
         <a href="#" class="btn btn-light w-100 d-flex justify-content-between align-items-center" id="clasificationLink">Clasificación</a>
     </li>
     <li class="list-group-item">
-        <a href="#" data-bs-toggle="collapse" data-bs-target="#infoPiloto" class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-element" id="pilotoCollapse">
-            Información de un piloto
-            <span><i class="bi bi-chevron-down"></i></span>
-        </a>
-        <ul class="list-group collapse" id="infoPiloto">
-            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Perfil</a></li>
-            <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5">Estadísticas</a></li>
-        </ul>
+        <a href="#" class="btn btn-light w-100 d-flex justify-content-between align-items-center" id="competitorLink">Información de un piloto</a>
     </li>
     <li class="list-group-item">
         <a href="#" data-bs-toggle="collapse" data-bs-target="#graphs" class="btn btn-light w-100 d-flex justify-content-between align-items-center collapse-element" id="graphsCollapse">
@@ -48,7 +41,7 @@
 </div>
 
 <!-- Year/date Modal -->
-<div class="modal fade" id="seleccionModal" tabindex="-1" aria-labelledby="seleccionModalLabel" aria-hidden="true">
+<div class="modal fade" id="yearModal" tabindex="-1" aria-labelledby="seleccionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -56,7 +49,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="seleccionForm">
+                <form id="yearSelectionForm">
                     <div class="mb-3">
                         <label for="year" class="form-label">Año</label>
                         <select class="form-select" id="yearSelector" name="year">
@@ -76,5 +69,27 @@
     </div>
 </div>
 
+<!-- Driver name Modal -->
+<div class="modal fade" id="competitorModal" tabindex="-1" aria-labelledby="seleccionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seleccionModalLabel">Seleccionar Piloto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="driverSelectionForm">
+                    <div class="mb-3">
+                        <label for="driver" class="form-label">Nombre del Piloto</label>
+                        <select class="form-select" id="driverSelector" name="driver">
+                            <!-- Options filled dynamically -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 

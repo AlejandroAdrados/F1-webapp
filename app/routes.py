@@ -1,12 +1,19 @@
 from flask import Blueprint, jsonify, render_template, request
 from app import web_data as wd
 from app import helpers as hp
+from flask_cors import CORS
+import plotly.graph_objs as go
 
 app_routes = Blueprint('app_routes', __name__)
+CORS(app_routes, resources={r"/api/*": {"origins": "*"}})
 
 @app_routes.route('/clasificacion')
 def index():
     return render_template('index.html')
+
+@app_routes.route('/competitor')
+def competitor_dashboard():
+    return render_template('competitor_dashboard.html')
 
 @app_routes.route('/api/results', methods=['GET'])
 def get_results():
@@ -41,3 +48,39 @@ def get_races():
     for item in data:
         if item['year'] == int(year):
             return jsonify(item)
+        
+@app_routes.route('/api/competitor/score', methods=['GET'])
+def get_competitor_score():
+    year = request.args.get('year')
+    race = request.args.get('race')
+    driver = request.args.get('driver')
+    result = hp.competitor_score_in_ranking(driver, year, race)
+    return jsonify(result)
+
+@app_routes.route('/api/competitor/position', methods=['GET'])
+def get_competitor_position():
+    year = request.args.get('year')
+    race = request.args.get('race')
+    driver = request.args.get('driver')
+    result = hp.competitor_position_in_ranking(driver, year, race)
+    return jsonify(result)
+
+@app_routes.route('/api/competitor/history', methods=['GET'])
+def get_competitor_history():
+    year = request.args.get('year')
+    race = int(request.args.get('race'))
+    driver = request.args.get('driver')
+    result = hp.competitor_position_history(driver, year, race)
+    return jsonify(result)
+
+@app_routes.route('/api/competitors/num', methods=['GET'])
+def get_num_copetitors():
+    year = request.args.get('year')
+    result = hp.num_competitors(year)
+    return jsonify(result)
+
+@app_routes.route('/api/competitors/list', methods=['GET'])
+def get_copmetitors():
+    year = request.args.get('year')
+    result = hp.competitors_list(year)
+    return jsonify(result)
