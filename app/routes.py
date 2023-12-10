@@ -1,11 +1,8 @@
 from flask import Blueprint, jsonify, render_template, request
 from app import web_data as wd
 from app import helpers as hp
-from flask_cors import CORS
-import plotly.graph_objs as go
 
 app_routes = Blueprint('app_routes', __name__)
-CORS(app_routes, resources={r"/api/*": {"origins": "*"}})
 
 @app_routes.route('/clasificacion')
 def index():

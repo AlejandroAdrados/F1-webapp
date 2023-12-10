@@ -1,12 +1,6 @@
-# En el archivo run.py
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from app import app as app_flask
-from frontend import app_dash
+from app import create_app
 
-app_combined = DispatcherMiddleware(app_flask, {
-    '/dash': app_dash.server
-})
+app = create_app()
 
-if __name__ == '__main__':
-    from werkzeug.serving import run_simple
-    run_simple('localhost', 8050, app_combined)
+if __name__ == "__main__":
+    app.run(debug=True, port=8050) 
