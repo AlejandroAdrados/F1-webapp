@@ -65,3 +65,17 @@ function updateYearToOptions() {
     yearToSelect.innerHTML += `<option value="${year}">${year}</option>`;
   }
 }
+
+// Obtener la jornada y el año de la URL (este es un ejemplo, ajusta la lógica según tu URL)
+const urlParams = new URLSearchParams(window.location.search);
+const year = urlParams.get('year');
+const race = urlParams.get('race');
+
+
+// Mostrar la información en el navbar
+const infoContainer = document.getElementById('jornadaAnioInfo');
+if (race !== null && year !== null) {
+    infoContainer.innerText = `Temporada ${year} - Jornada ${race}`;
+} else {
+    infoContainer.innerText = 'Seleccione jornada y año';
+}

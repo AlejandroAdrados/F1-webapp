@@ -10,16 +10,16 @@ def index():
 
 @app_routes.route('/api/results', methods=['GET'])
 def get_results():
-    jornada = request.args.get('jornada')
-    anio = request.args.get('anio')
+    year = request.args.get('year')
+    race = request.args.get('race')
     
     # Verifica si los parámetros fueron proporcionados en la solicitud
-    if jornada and anio:
-        results = hp.total_ranking(anio, jornada)
+    if race and year:
+        results = hp.total_ranking(year, race)
         return jsonify(results)
     
     # En caso de que los parámetros no estén presentes, devuelve un error o una respuesta indicando que faltan parámetros
-    return jsonify({'error': 'Se requieren los parámetros "jornada" y "anio"'}), 400
+    return jsonify({'error': 'Se requieren los parámetros año y jornada'}), 400
 
 @app_routes.route('/api/results', methods=['POST'])
 def update_results():

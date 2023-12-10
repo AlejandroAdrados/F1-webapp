@@ -41,19 +41,10 @@
 <script src="../static/js/sidebar.js"></script>
 
 <script>
-// Obtener los parámetros de la URL
-const urlParams = new URLSearchParams(window.location.search);
-const jornada = urlParams.get('jornada');
-const anio = urlParams.get('anio');
-
-if (jornada !== null && anio !== null) {
-      // Modificar el título con los parámetros de la URL
-      document.getElementById('pageTitle').innerText = `Clasificación de la jornada ${jornada} del año ${anio}`;
-    }
 
 $(document).ready(function() {
     // Llamada GET a la API para obtener los datos de clasificación con los parámetros
-    $.get(`/api/results?jornada=${jornada}&anio=${anio}`, function(data) {
+    $.get(`/api/results?year=${year}&race=${race}`, function(data) {
         // Manejo de los datos recibidos para crear la tabla de clasificación
         var tabla = '';
         data.forEach(function(item) {

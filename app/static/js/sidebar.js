@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // Cuando se haga clic en "Clasificación"
-    $('#clasificationLink').click(function (e) {
+    $('#changeLink').click(function (e) {
         e.preventDefault(); // Evitar que se ejecute el href del enlace
         $('#seleccionModal').modal('show'); // Mostrar el modal de selección
     });
@@ -8,10 +8,10 @@ $(document).ready(function () {
     // Manejar el envío del formulario de selección
     $('#seleccionForm').submit(function (e) {
         e.preventDefault(); // Evitar la acción por defecto del formulario
-        const jornada = $('#racesSelector').val();
-        const anio = $('#yearSelector').val();
+        const race = $('#racesSelector').val();
+        const year = $('#yearSelector').val();
         // Redirigir a la página de clasificación con los parámetros de jornada y año
-        window.location.href = `/clasificacion?jornada=${jornada}&anio=${anio}`;
+        window.location.href = `/clasificacion?year=${year}&race=${race}`;
     });
 });
 document.addEventListener('DOMContentLoaded', function () {
