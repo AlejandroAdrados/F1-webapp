@@ -86,6 +86,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
-
-

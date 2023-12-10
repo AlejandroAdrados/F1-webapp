@@ -1,6 +1,7 @@
 from .models import YearResults
 from . import db
 
+# Función que devuelve la clasificación de una ranking
 def total_ranking(year, ranking):
     results = db.session.query(YearResults.driver_name, db.func.SUM(YearResults.points).label('total_points')) \
         .filter(YearResults.year == year, YearResults.race_number <= ranking) \
@@ -14,6 +15,7 @@ def total_ranking(year, ranking):
 
     return serialized_results
 
+# Función que devuelve el año y el número de temporadas que hay en la bbdd
 def get_info():
     results = db.session.query(
     YearResults.year,
@@ -26,6 +28,7 @@ def get_info():
 
     return serialized_results
 
+# Función que devuelve los puntos de un piloto en una ranking
 def competitor_score_in_ranking(driver_name, year, race_number):
     result = db.session.query(db.func.sum(YearResults.points)).\
         filter(YearResults.driver_name == driver_name).\
@@ -34,6 +37,7 @@ def competitor_score_in_ranking(driver_name, year, race_number):
         scalar()
     return result
 
+# Función que devuelve la posición de un piloto en una clasificación
 def competitor_position_in_ranking(driver_name, year, ranking):
     competitor_points = competitor_score_in_ranking(driver_name, year, ranking)
 
@@ -48,6 +52,7 @@ def competitor_position_in_ranking(driver_name, year, ranking):
 
     return count_position
 
+# Función que devuelve el histórico de pilotos que ocupan una posición hasta una ranking
 def competitor_position_history(driver_name, year, ranking):
     history = []
     i = 0
@@ -56,8 +61,8 @@ def competitor_position_history(driver_name, year, ranking):
         history.append({'race' : i, 'position' : competitor_position_in_ranking(driver_name, year, rank)})
     return history
 
+# Función que devuelve la lista de pilotos de un año
 def competitors_list(year):
-    # Realizar la consulta utilizando SQLAlchemy
     result = db.session.query(db.distinct(YearResults.driver_name)).filter(YearResults.year == year)
     serialized_result = [
         {'driver_name': row[0]}
@@ -65,5 +70,77 @@ def competitors_list(year):
     ]
     return serialized_result
 
+# Función que devuelve el número de pilotos de un año
 def num_competitors(year):
     return len(competitors_list(year))
+
+# Función que devuelve los pilotos por encima de un piloto en una ranking
+def competitors_above(driver_name, year, ranking):
+    competitors = (
+        db.session.query(YearResults.driver_name)
+        .filter(YearResults.race_number <= ranking, YearResults.year == year)
+        .group_by(YearResults.driver_name)
+        .having(db.func.sum(YearResults.points) > competitor_score_in_ranking(driver_name, year, ranking))
+        .order_by(db.func.sum(YearResults.points).desc())
+        .all()
+    )
+
+    # Transforma el resultado a una lista de nombres de pilotos si hay resultados
+    if competitors:
+        return [competitor[0] for competitor in competitors]
+    else:
+        return []
+
+# Función que devuelve los pilotos por debajo de un piloto en una ranking
+def competitors_below(driver_name, year, ranking):
+    competitors = (
+        db.session.query(YearResults.driver_name)
+        .filter(YearResults.race_number <= ranking, YearResults.year == year)
+        .group_by(YearResults.driver_name)
+        .having(db.func.sum(YearResults.points) < competitor_score_in_ranking(driver_name, year, ranking))
+        .order_by(db.func.sum(YearResults.points).desc())
+        .all()
+    )
+    if competitors:
+        return [competitor[0] for competitor in competitors]
+    else:
+        return []
+
+# Función que devuelve el piloto que ocupa una posición en una ranking
+def competitor_in_position_in_ranking(position, ranking, year):
+    competitor = (
+        db.session.query(YearResults.driver_name, db.func.sum(YearResults.points).label('total_points'))
+        .filter(YearResults.race_number <= ranking, YearResults.year == year)
+        .group_by(YearResults.driver_name)
+        .order_by(db.func.sum(YearResults.points).desc())
+        .offset(position - 1)
+        .limit(1)
+        .first()
+    )
+    if competitor:
+        return competitor[0]
+    else:
+        return None
+
+# Función que devuelve los cambios de posición entre dos rankings
+def positions_swaps_in_ranking(year, ranking):
+    result = []
+    competitors_number = len(total_ranking(year, ranking))
+    for i in range(1, competitors_number):
+        competitor_in_current_position = competitor_in_position_in_ranking(i, ranking, year)
+        if set(competitors_above(competitor_in_current_position, year, ranking)) != set(
+                competitors_above(competitor_in_current_position, year, ranking - 1)):
+            competitors_above_currently = set(competitors_above(competitor_in_current_position, year, ranking - 1))
+            competitors_below_currently = set(competitors_below(competitor_in_current_position, year, ranking))
+            overtaken_competitors = list(competitors_above_currently & competitors_below_currently)
+            current_position = competitors_number - len(competitors_below_currently)
+            if overtaken_competitors:
+                result.append((current_position, competitor_in_current_position, overtaken_competitors))
+    return result
+
+# Función que devuelve los cambios de posición hasta una ranking
+def positions_swaps_until_ranking(year, ranking):
+    result = []
+    for i in range(2, ranking):
+        result.append(positions_swaps_in_ranking(year, i))
+    return result
