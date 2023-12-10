@@ -16,7 +16,7 @@
 
             <!-- Contenido principal -->
             <div class="col-lg-9 col-md-8">
-                <h1>Clasificación</h1>
+                <h1 id="pageTitle">Clasificación</h1>
                 <!-- Tabla para mostrar la clasificación -->
                 <table class="table table-striped">
                     <thead>
@@ -45,6 +45,11 @@
 const urlParams = new URLSearchParams(window.location.search);
 const jornada = urlParams.get('jornada');
 const anio = urlParams.get('anio');
+
+if (jornada !== null && anio !== null) {
+      // Modificar el título con los parámetros de la URL
+      document.getElementById('pageTitle').innerText = `Clasificación de la jornada ${jornada} del año ${anio}`;
+    }
 
 $(document).ready(function() {
     // Llamada GET a la API para obtener los datos de clasificación con los parámetros

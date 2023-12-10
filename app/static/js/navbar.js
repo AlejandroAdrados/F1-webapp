@@ -5,18 +5,28 @@ $('#actualizarDB').click(function() {
 
   $('#apiOption').click(function() {
     // Ocultar los botones y el texto del modal, y mostrar el spinner
-    $('#apiOption, #importarArchivo').hide();
+    $('#apiOption, #importarArchivo, #yearFrom, #yearTo, #labelYearFrom, #labelYearTo').hide();
     $('.modal-body p').hide();
     $('.spinner-border').show();
-
+    const yearStart = parseInt(document.getElementById('yearFrom').value);
+    const yearEnd = parseInt(document.getElementById('yearTo').value);
+    
+    const data = {
+      year_start: yearStart,
+      year_end: yearEnd
+    };
     // Llamada a la API para "Resultados a Internet"
     fetch('/api/results', {
       method: 'POST',
-      // Puedes incluir headers o datos en la solicitud si es necesario
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
     })
     .then(response => {
       if (response.ok) {
         alert('Resultados correctamente importados desde Internet');
+        window.location.reload();
       }
       // Mostrar de nuevo los botones y el texto después de la respuesta, y ocultar el spinner
       $('#apiOption, #importarArchivo').show();
@@ -44,3 +54,14 @@ $('#actualizarDB').click(function() {
     $('#archivoOption').click();
   });
 });
+
+function updateYearToOptions() {
+  const yearFrom = parseInt(document.getElementById('yearFrom').value);
+  const yearToSelect = document.getElementById('yearTo');
+
+  yearToSelect.innerHTML = ''; // Limpiar opciones anteriores
+
+  for (let year = yearFrom; year <= 2023; year++) {
+    yearToSelect.innerHTML += `<option value="${year}">${year}</option>`;
+  }
+}

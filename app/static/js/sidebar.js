@@ -8,8 +8,8 @@ $(document).ready(function () {
     // Manejar el envío del formulario de selección
     $('#seleccionForm').submit(function (e) {
         e.preventDefault(); // Evitar la acción por defecto del formulario
-        const jornada = $('#jornada').val();
-        const anio = $('#anio').val();
+        const jornada = $('#racesSelector').val();
+        const anio = $('#yearSelector').val();
         // Redirigir a la página de clasificación con los parámetros de jornada y año
         window.location.href = `/clasificacion?jornada=${jornada}&anio=${anio}`;
     });
@@ -28,59 +28,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Obtener referencias a los elementos select
-const selectAnio = document.getElementById('anio');
-const selectJornada = document.getElementById('jornada');
-
-// Realizar una solicitud GET a la API para obtener los datos
-function obtenerDatos() {
-    fetch('/api/info')
-        .then(response => response.json())
-        .then(data => {
-            llenarDesplegables(data); // Llamar a la función para llenar los desplegables con los datos obtenidos
-        })
-        .catch(error => {
-            console.error('Error:', error);
+$(document).ready(function() {
+    $.get('/api/years', function(data) {
+        var years = data.map(function(item) {
+            return item.year;
         });
-}
-
-// Función para llenar dinámicamente las opciones del select de años y jornadas
-function llenarDesplegables(data) {
-    data.forEach(function(item) {
-        const optionAnio = document.createElement('option');
-        optionAnio.value = item.year;
-        optionAnio.textContent = item.year;
-        selectAnio.appendChild(optionAnio);
+        var defaultYear = years[0]
+        for (var i = 0; i < years.length; i++) {
+            $('#yearSelector').append($('<option>', {
+                value: years[i],
+                text: years[i]
+            }));
+        }
+        $('#yearSelector').val(defaultYear).trigger('change');
     });
+});
 
-    // Evento al seleccionar un año
-    selectAnio.addEventListener('change', function() {
-        const selectedYear = parseInt(this.value); // Obtener el año seleccionado como entero
-
-        // Vaciar el desplegable de jornadas
-        selectJornada.innerHTML = "";
-
-        if (!isNaN(selectedYear)) {
-            // Obtener el objeto correspondiente al año seleccionado
-            const yearData = data.find(item => item.year === selectedYear);
-
-            if (yearData) {
-                // Hacer un bucle del 1 al número de carreras (num_races) correspondiente a ese año
-                for (let i = 1; i <= yearData.num_races; i++) {
-                    const optionJornada = document.createElement('option');
-                    optionJornada.value = i;
-                    optionJornada.textContent = `Jornada ${i}`;
-                    selectJornada.appendChild(optionJornada);
-                }
-            } else {
-                const optionJornada = document.createElement('option');
-                optionJornada.textContent = "Selecciona un año primero";
-                selectJornada.appendChild(optionJornada);
-            }
+$('#yearSelector').change(function() {
+    var selectedYear = $(this).val();
+    $.get('/api/races?year=' + selectedYear, function(data) {
+        var races = data.races;
+        $('#racesSelector').empty(); // Limpiar las opciones anteriores
+        for (var i = 1; i <= races; i++) {
+            $('#racesSelector').append($('<option>', {
+                value: i,
+                text: i
+            }));
         }
     });
-}
-
-// Obtener datos cuando la página se carga
-obtenerDatos();
+});
 
