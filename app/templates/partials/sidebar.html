@@ -5,6 +5,9 @@
         <h5 class="sidebar-heading">Menú</h5>
 <ul class="list-group">
     <li class="list-group-item">
+        <a href="/" class="btn btn-light w-100 d-flex justify-content-between align-items-center" id="indexLink">Inicio</a>
+    </li>
+    <li class="list-group-item">
         <a href="#" class="btn btn-light w-100 d-flex justify-content-between align-items-center" id="clasificationLink">Clasificación</a>
     </li>
     <li class="list-group-item">
@@ -74,15 +77,27 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="seleccionModalLabel">Seleccionar Piloto</h5>
+                <h5 class="modal-title" id="seleccionModalLabel">Seleccionar Temporada, Jornada y Piloto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="driverSelectionForm">
                     <div class="mb-3">
-                        <label for="driver" class="form-label">Nombre del Piloto</label>
+                        <label for="yearSelector" class="form-label">Seleccionar Temporada</label>
+                        <select class="form-select" id="yearSelectorDriver" name="year">
+                            <!-- Opciones de temporadas llenadas dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="racesSelector" class="form-label">Seleccionar Jornada</label>
+                        <select class="form-select" id="racesSelectorDriver" name="races">
+                            <!-- Opciones de jornadas llenadas dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="driverSelector" class="form-label">Seleccionar Piloto</label>
                         <select class="form-select" id="driverSelector" name="driver">
-                            <!-- Options filled dynamically -->
+                            <!-- Opciones de pilotos llenadas dinámicamente -->
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar</button>

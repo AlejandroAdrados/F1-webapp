@@ -13,23 +13,33 @@
     <div class="container-fluid mt-4">
         <div class="row">
             {% include 'partials/sidebar.html' %}
-
-            <!-- Contenido principal -->
             <div class="col-lg-9 col-md-8">
-                <h1 id="pageTitle">Clasificación</h1>
-                <!-- Tabla para mostrar la clasificación -->
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Puntos</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaClasificacion">
-                        <!-- Aquí se llenará la tabla con los datos -->
-                    </tbody>
-                </table>
+                <h1 class="text-center">Bienvenido a la WebApp de Fórmula 1</h1>
+  
+      <!-- Slider de imágenes -->
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="../static/images/index_img1.webp" class="d-block w-100 img-fluid" alt="...">
             </div>
+            <div class="carousel-item">
+                <img src="../static/images/index_img2.jpg" class="d-block w-100 img-fluid" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="../static/images/index_img3.jpg" class="d-block w-100 img-fluid" alt="...">
+            </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+            </div>
+            
         </div>
     </div>
 
@@ -40,20 +50,5 @@
 <script src="../static/js/navbar.js"></script>
 <script src="../static/js/sidebar.js"></script>
 
-<script>
-
-$(document).ready(function() {
-    // Llamada GET a la API para obtener los datos de clasificación con los parámetros
-    $.get(`/api/results?year=${year}&race=${race}`, function(data) {
-        // Manejo de los datos recibidos para crear la tabla de clasificación
-        var tabla = '';
-        data.forEach(function(item) {
-            tabla += '<tr><td>' + item.driver_name + '</td><td>' + item.total_points + '</td></tr>';
-        });
-        // Insertar la tabla en el elemento con el ID 'tablaClasificacion'
-        $('#tablaClasificacion').html(tabla);
-    });
-});
-</script>
 </body>
 </html>

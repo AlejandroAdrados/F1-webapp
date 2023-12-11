@@ -4,13 +4,17 @@ from app import helpers as hp
 
 app_routes = Blueprint('app_routes', __name__)
 
-@app_routes.route('/clasificacion')
+@app_routes.route('/')
 def index():
     return render_template('index.html')
 
 @app_routes.route('/competitor')
 def competitor_dashboard():
     return render_template('competitor_dashboard.html')
+
+@app_routes.route('/clasification')
+def clasification():
+    return render_template('clasification.html')
 
 @app_routes.route('/api/results', methods=['GET'])
 def get_results():

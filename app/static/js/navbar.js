@@ -76,6 +76,4 @@ const race = urlParams.get('race');
 const infoContainer = document.getElementById('jornadaAnioInfo');
 if (race !== null && year !== null) {
     infoContainer.innerText = `Temporada ${year} - Jornada ${race}`;
-} else {
-    infoContainer.innerText = 'Seleccione jornada y año';
 }

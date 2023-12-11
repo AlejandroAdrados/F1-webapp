@@ -1,0 +1,29 @@
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+h2 {
+    margin-top: 40px;
+}
+.info-box {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 10px; /* Reducir el padding para hacer el cuadro más pequeño */
+    margin-bottom: 20px;
+}
+.info-title {
+    font-size: 1.2em; /* Reducir el tamaño del título */
+    font-weight: bold;
+    margin-bottom: 5px; /* Reducir el margen inferior del título */
+}
+.info-value {
+    font-size: 2em; /* Aumentar el tamaño del número */
+    font-weight: bold;
+}
+#history-chart {
+    margin-top: 20px;
+}
+.col-centered {
+    margin: 0 auto; /* Centrar las columnas */
+    float: none;
+}
