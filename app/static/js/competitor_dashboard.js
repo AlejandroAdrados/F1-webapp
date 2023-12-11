@@ -40,10 +40,9 @@ function getHistory() {
             };
 
             const layout = {
-                title: 'Historial de Posiciones',
                 xaxis: { 
                     title: 'Jornada',
-                    range: [0, races.length]
+                    range: [0, races.length + 1]
                 },
                 yaxis: {
                     title: 'Posición',

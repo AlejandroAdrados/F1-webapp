@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>F1 webapp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'partials/navbar.html' %}
+    <div class="container-fluid mt-4">
+        <div class="row">
+            {% include 'partials/sidebar.html' %}
+
+            <!-- Contenido principal -->
+            <div class="col-lg-9 col-md-8 mx-auto">
+                <h1 id="pageTitle">Grafo de competitividad</h1>
+                <div id="loading-spinner" class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div id="graph" style="display: none; max-width: 1000px; margin:0 auto; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);"></div>
+                <button id="loadAnotherGraphBtn" class="btn btn-primary mt-3" style="display: none;">Cargar otro grafo</button>
+            </div>
+        </div>
+    </div>
+
+<!-- Scripts de Bootstrap y otros -->
+<!-- Los scripts de Bootstrap requieren jQuery y Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../static/js/navbar.js"></script>
+<script src="../static/js/sidebar.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Mostrar el spinner de carga
+    $('#loading-spinner').show();
+
+    $.ajax({
+        url: `/api/graph?year=${year}&race=${race}`,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Ocultar el spinner una vez que se carga el gráfico
+            $('#loading-spinner').hide();
+            $('#graph').show(); // Mostrar el gráfico
+            Plotly.newPlot('graph', data);
+            $('#loadAnotherGraphBtn').show();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching graph data:', error);
+            // En caso de error, ocultar el spinner y mostrar un mensaje de error
+            $('#loading-spinner').hide();
+            $('#graph').text('Error loading graph data');
+        }
+    });
+});
+</script>
+
+</body>
+</html>

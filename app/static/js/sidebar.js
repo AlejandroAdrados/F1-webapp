@@ -44,6 +44,28 @@ $('#yearSelectorDriver').change(function() {
     loadDriversForSelector(selectedYear);
 });
 
+// Lógica grafos
+$(document).ready(function () {
+    $('#graphLink').click(function (e) {
+        e.preventDefault();
+        const yearSelector = $('#yearSelectorModal');
+        loadYearsForSelector(yearSelector);
+        $('#graphModal').modal('show');
+    });
+
+    $('#graphSelectionForm').submit(function (e) {
+        e.preventDefault();
+        const race = $('#racesSelectorModal').val();
+        const year = $('#yearSelectorModal').val();
+        window.location.href = `/graph?year=${year}&race=${race}`;
+    });
+});
+$('#yearSelectorModal').change(function() {
+    var selectedYear = $(this).val();
+    const yearSelector = $('#racesSelectorModal');
+    loadRacesForSelector(selectedYear, yearSelector);
+});
+
 // Lógica para el cambio de icono en los elementos colapsables
 document.addEventListener('DOMContentLoaded', function () {
     const collapseElements = document.querySelectorAll('.collapse-element');
@@ -94,8 +116,8 @@ function loadDriversForSelector(selectedYear) {
         $('#driverSelector').empty(); 
         data.forEach(function(driver) {
             $('#driverSelector').append($('<option>', {
-                value: driver.driver_name,
-                text: driver.driver_name
+                value: driver,
+                text: driver
             }));
         });
     });

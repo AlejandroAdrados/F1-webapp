@@ -1,15 +1,15 @@
-from .models import YearResults
-from . import db
+from ..models import YearResults
+from .. import db
 
 # Función que devuelve la clasificación de una ranking
 def total_ranking(year, ranking):
-    results = db.session.query(YearResults.driver_name, db.func.SUM(YearResults.points).label('total_points')) \
+    results = db.session.query(YearResults.driver_name, YearResults.team, db.func.SUM(YearResults.points).label('total_points')) \
         .filter(YearResults.year == year, YearResults.race_number <= ranking) \
         .group_by(YearResults.driver_name) \
         .order_by(db.func.SUM(YearResults.points).desc()) \
         .all()
     serialized_results = [
-        {'driver_name': row.driver_name, 'total_points': row.total_points}
+        {'driver_name': row.driver_name, 'team': row.team, 'total_points': row.total_points}
         for row in results
     ]
 
@@ -35,7 +35,10 @@ def competitor_score_in_ranking(driver_name, year, race_number):
         filter(YearResults.year == year).\
         filter(YearResults.race_number <= race_number).\
         scalar()
-    return result
+    if result:
+        return result
+    else:
+        return 0
 
 # Función que devuelve la posición de un piloto en una clasificación
 def competitor_position_in_ranking(driver_name, year, ranking):
@@ -56,7 +59,7 @@ def competitor_position_in_ranking(driver_name, year, ranking):
 def competitor_position_history(driver_name, year, ranking):
     history = []
     i = 0
-    for rank in range(1,ranking):
+    for rank in range(1,ranking+1):
         i += 1
         history.append({'race' : i, 'position' : competitor_position_in_ranking(driver_name, year, rank)})
     return history
@@ -64,10 +67,7 @@ def competitor_position_history(driver_name, year, ranking):
 # Función que devuelve la lista de pilotos de un año
 def competitors_list(year):
     result = db.session.query(db.distinct(YearResults.driver_name)).filter(YearResults.year == year)
-    serialized_result = [
-        {'driver_name': row[0]}
-        for row in result
-    ]
+    serialized_result = [row[0] for row in result]
     return serialized_result
 
 # Función que devuelve el número de pilotos de un año
@@ -125,7 +125,7 @@ def competitor_in_position_in_ranking(position, ranking, year):
 # Función que devuelve los cambios de posición entre dos rankings
 def positions_swaps_in_ranking(year, ranking):
     result = []
-    competitors_number = len(total_ranking(year, ranking))
+    competitors_number = num_competitors(year)
     for i in range(1, competitors_number):
         competitor_in_current_position = competitor_in_position_in_ranking(i, ranking, year)
         if set(competitors_above(competitor_in_current_position, year, ranking)) != set(

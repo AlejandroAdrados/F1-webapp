@@ -19,9 +19,11 @@ def create_app():
     # Inicializar la extensión SQLAlchemy
     db.init_app(app)
 
-    from app.routes import app_routes
+    from app.app_routes import app as app_routes
+    from app.api_routes import api as api_routes
     # Registrar las rutas de la aplicación Flask y la API
     app.register_blueprint(app_routes)
+    app.register_blueprint(api_routes)
 
     from app import models
     with app.app_context():

@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
-from .models import YearResults
-from . import db
+from ..models import YearResults
+from .. import db
 
 def load_data(year1, year2):
     for year in range(year1, year2+1):
