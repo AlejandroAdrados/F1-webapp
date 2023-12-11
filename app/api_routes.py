@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.modules import web_data as wd
 from app.modules import database as db
 from app.modules import graphs as gr
+from app.modules import plots as pl
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -95,3 +96,17 @@ def get_bonus_graph():
     fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
     graph_json = fig.to_json()
     return graph_json
+
+@api.route('metrics/season', methods=['GET'])
+def get_season_metrics():
+    year = request.args.get('year')
+    race = int(request.args.get('race'))
+    result = pl.season_metrics(year, race, False)
+    return jsonify(result)
+
+@api.route('metrics/bseason', methods=['GET'])
+def get_season_bonus_metrics():
+    year = request.args.get('year')
+    race = int(request.args.get('race'))
+    result = pl.season_metrics(year, race, True)
+    return jsonify(result)
