@@ -133,7 +133,7 @@ def positions_swaps_in_ranking(year, ranking):
             competitors_above_currently = set(competitors_above(competitor_in_current_position, year, ranking - 1))
             competitors_below_currently = set(competitors_below(competitor_in_current_position, year, ranking))
             overtaken_competitors = list(competitors_above_currently & competitors_below_currently)
-            current_position = competitors_number - len(competitors_below_currently)
+            current_position = competitor_position_in_ranking(competitor_in_current_position, year, ranking)
             if overtaken_competitors:
                 result.append((current_position, competitor_in_current_position, overtaken_competitors))
     return result

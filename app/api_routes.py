@@ -84,3 +84,14 @@ def get_graph():
     fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
     graph_json = fig.to_json()
     return graph_json
+
+@api.route('bgraph', methods=['GET'])
+def get_bonus_graph():
+    year = request.args.get('year')
+    race = int(request.args.get('race'))
+    graph, swaps_list = gr.graph_until_ranking(year, race)
+    bonuses = {1: 4, 2: 3, 3: 2}
+    weighted_graph, labels = gr.weighted_graph(graph, swaps_list, bonuses)
+    fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
+    graph_json = fig.to_json()
+    return graph_json
