@@ -1,27 +1,31 @@
 $(document).ready(function() {
     let graphData = [];
-
+    let graphsArray = [];
     function loadNewGraph(year, race, isBonus) {
         $('#loading-spinner').show();
+        $('#loadAnotherGraph').hide();
         let url = `/api/bgraph?year=${year}&race=${race}`;
         if (!isBonus) {
             url = `/api/graph?year=${year}&race=${race}`;
-    }
+        }
         $.ajax({
             url: url,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
                 $('#loading-spinner').hide();
+                $('#loadAnotherGraph').show();
+                graphsArray.push([year, race, isBonus])
+                refreshList();
                 const graphDiv = $('<div>').addClass('graph').appendTo('#graph');
                 const graphId = `graph_${graphData.length + 1}`;
-                $('<h3>').text(`Grafo temporada ${year} jornada ${race}`).appendTo(graphDiv);
                 $('<div>').attr('id', graphId).appendTo(graphDiv);
+                data.layout.title=`Grafo temporada ${year} jornada ${race}`;
                 Plotly.newPlot(graphId, data);
                 graphData.push(data);
     
                 if (graphData.length >= 1) {
-                    $('#loadAnotherGraphBtn').show();
+                    $('#loadAnotherGraph').show();
                 }
             },
             error: function(xhr, status, error) {
@@ -32,7 +36,40 @@ $(document).ready(function() {
         });
     }
 
-    $('#loadAnotherGraphBtn').click(function(e) {
+    function refreshList() {
+        const graphsList = document.getElementById('graphsList');
+        graphsList.innerHTML = ''; // Vacía el contenido antes de cargar los nuevos elementos
+        graphsArray.forEach(element => {
+            const [year, race, isBonus] = element;
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item');
+            const content = document.createElement('span');
+            content.innerText = `Temporada ${year} Jornada ${race} ${isBonus ? 'bonificado' : 'no bonificado'}`;
+            const deleteButton = document.createElement('span');
+            deleteButton.classList.add('delete-button');
+            deleteButton.innerHTML = '&#10006;'; // Esto es el carácter unicode para la cruz
+            deleteButton.href = '#';
+            deleteButton.onclick = function() {
+                const index = $(this).parent().index();
+                deleteGraph(index);
+                graphsArray.splice(index, 1);
+                listItem.remove();
+            };
+            listItem.appendChild(content);
+            listItem.appendChild(deleteButton);
+            graphsList.appendChild(listItem);
+        });
+    }
+
+    function deleteGraph(index){
+        const container = document.getElementById('graph');
+        if (container && container.childNodes.length > index) {
+            const element = container.childNodes[index];
+            container.removeChild(element);
+        }
+    }
+
+    $('#loadAnotherGraph').click(function(e) {
         e.preventDefault();
         const yearSel = $('#yearSelectorModal');
         loadYearsForSelector(yearSel);
@@ -54,7 +91,7 @@ $(document).ready(function() {
         loadNewGraph(year, race, isBonus);
     });
 
-    document.getElementById("loadAnotherGraphBtn").click();
+    document.getElementById("loadAnotherGraph").click();
 });
 
 

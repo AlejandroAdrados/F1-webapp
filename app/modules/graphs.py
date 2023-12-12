@@ -114,8 +114,9 @@ def convert_networkx_to_plotly(G, edge_labels):
 
 
     fig = go.Figure(data=[edge_trace, node_trace],
-                    layout=go.Layout(
-                        #plot_bgcolor='white',
+                   layout=go.Layout(
+                       title="",
+                       #plot_bgcolor='white',
                         showlegend=False,
                         hovermode='closest',
                         margin=dict(b=20, l=5, r=5, t=40),
@@ -125,8 +126,9 @@ def convert_networkx_to_plotly(G, edge_labels):
                             xref="paper", yref="paper",
                             x=0.005, y=-0.002)],
                         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, visible=False),
-                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
                     )
+               )
     
     # Añadir etiquetas personalizadas de las aristas al gráfico
     for edge, label in edge_labels.items():

@@ -2,14 +2,14 @@ $(document).ready(function() {
     let graphsArray = [];
     function loadNewPlot(year, race, isBonus) {
         $('#loading-spinner').show();
-        $('#loadAnotherGraphMetricsBtn').hide();
+        $('#loadAnotherPlot').hide();
         let url = `/api/metrics/bseason?year=${year}&race=${race}`;
         if (!isBonus) {
             url = `/api/metrics/season?year=${year}&race=${race}`;
         }
         $.get(url, function(data) {
             $('#loading-spinner').hide();
-            $('#loadAnotherGraphMetricsBtn').show();
+            $('#loadAnotherPlot').show();
             graphsArray.push([year, race, isBonus])
             refreshList();
             const datos = data; // Datos obtenidos de la API
@@ -82,8 +82,8 @@ $(document).ready(function() {
     }
     
     function refreshList() {
-        const graphList = document.getElementById('graphList');
-        graphList.innerHTML = ''; // Vacía el contenido antes de cargar los nuevos elementos
+        const plotsList = document.getElementById('plotsList');
+        plotsList.innerHTML = ''; // Vacía el contenido antes de cargar los nuevos elementos
         graphsArray.forEach(element => {
             const [year, race, isBonus] = element;
             const listItem = document.createElement('li');
@@ -102,11 +102,11 @@ $(document).ready(function() {
             };
             listItem.appendChild(content);
             listItem.appendChild(deleteButton);
-            graphList.appendChild(listItem);
+            plotsList.appendChild(listItem);
         });
     }
     
-    $('#loadAnotherGraphMetricsBtn').click(function(e) {
+    $('#loadAnotherPlot').click(function(e) {
             e.preventDefault();
             const yearSel = $('#yearSelectorPlotsModal');
             loadYearsForSelector(yearSel);
@@ -128,7 +128,7 @@ $(document).ready(function() {
         loadNewPlot(year, race, isBonus);
     });
 
-    document.getElementById("loadAnotherGraphMetricsBtn").click();
+    document.getElementById("loadAnotherPlot").click();
 });
        
 function loadYearsForSelector(selector) {

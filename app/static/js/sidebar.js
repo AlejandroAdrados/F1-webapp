@@ -59,6 +59,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Lógica para mostrar ocultar menú plots
+$(document).ready(function() {
+    const url = window.location.href;
+    if (!url.includes('/metrics/plots')) {
+        document.getElementById('plotManagement').style.display = 'none';
+    }
+});
+
+// Lógica para mostrar ocultar menú grafos
+$(document).ready(function() {
+    const url = window.location.href;
+    if (!url.includes('/graph')) {
+        document.getElementById('graphManagement').style.display = 'none';
+    }
+});
+
 // Funciones para rellenar selectores
 function loadYearsForSelector(selector) {
     $.get('/api/years', function(data) {
