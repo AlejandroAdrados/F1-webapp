@@ -22,7 +22,7 @@
                     <span><i class="bi bi-chevron-down"></i></span>
                 </a>
                 <ul class="list-group collapse" id="metrics">
-                    <li class="list-group-item"><a href="/metrics/plots" class="btn btn-light w-100 text-start ps-5">Resumen de métricas</a></li>
+                    <li class="list-group-item"><a href="#" class="btn btn-light w-100 text-start ps-5" id="metricsLink">Resumen de métricas</a></li>
                     <li class="list-group-item"><a href="/metrics/plots" class="btn btn-light w-100 text-start ps-5">Evolución de métricas</a></li>
                 </ul>
             </li>
@@ -108,6 +108,39 @@
                         <select class="form-select" id="driverSelector" name="driver">
                             <!-- Opciones de pilotos llenadas dinámicamente -->
                         </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Metrics Modal -->
+<div class="modal fade" id="metricsModal" tabindex="-1" aria-labelledby="seleccionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seleccionModalLabel">Seleccionar Jornada y Año</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="metricsSelectionForm">
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Año</label>
+                        <select class="form-select" id="yearSelectorMetricsModal" name="year">
+                            <!-- Opciones de jornada llenadas dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="races" class="form-label">Jornada</label>
+                        <select class="form-select" id="racesSelectorMetricsModal" name="races">
+                            <!-- Opciones de año llenadas dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="bonificationCheckboxMetricsModal" name="bonification">
+                        <label class="form-check-label" for="bonificationCheckbox">Grafo bonificado por posiciones de podio</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar</button>
                 </form>

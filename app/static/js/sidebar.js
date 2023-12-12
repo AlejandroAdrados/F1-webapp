@@ -44,6 +44,29 @@ $('#yearSelectorDriver').change(function() {
     loadDriversForSelector(selectedYear);
 });
 
+// Lógica resumen de métricas
+$(document).ready(function() {
+    $('#metricsLink').click(function (e) {
+        e.preventDefault();
+        const metricsSelector = $('#yearSelectorMetricsModal')
+        loadYearsForSelector(metricsSelector);
+        $('#metricsModal').modal('show');
+    });
+
+    $('#metricsSelectionForm').submit(function (e) {
+        e.preventDefault();
+        const race = $('#racesSelectorMetricsModal').val();
+        const year = $('#yearSelectorMetricsModal').val();
+        const isBonus = $('#bonificationCheckboxMetricsModal').is(':checked');
+        window.location.href = `/metrics?year=${year}&race=${race}&bonus=${isBonus}`;
+    });
+});
+$('#yearSelectorMetricsModal').change(function() {
+    var selectedYear = $(this).val();
+    const raceSelector = $('#racesSelectorMetricsModal');
+    loadRacesForSelector(selectedYear, raceSelector);
+});
+
 // Lógica para el cambio de icono en los elementos colapsables
 document.addEventListener('DOMContentLoaded', function () {
     const collapseElements = document.querySelectorAll('.collapse-element');

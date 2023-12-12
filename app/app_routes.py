@@ -18,6 +18,10 @@ def clasification():
 def graph():
     return render_template('graph.html')
 
+@app.route('/metrics')
+def metrics():
+    return render_template('metrics.html')
+
 @app.route('/metrics/plots')
 def metrics_plots():
     return render_template('metrics_plots.html')

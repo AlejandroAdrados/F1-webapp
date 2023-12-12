@@ -3,6 +3,7 @@ from app.modules import web_data as wd
 from app.modules import database as db
 from app.modules import graphs as gr
 from app.modules import plots as pl
+from app.modules import metrics as mt
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -96,6 +97,25 @@ def get_bonus_graph():
     fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
     graph_json = fig.to_json()
     return graph_json
+
+@api.route('metrics/ranking', methods=['GET'])
+def get_ranking_metrics():
+    year = request.args.get('year')
+    race = int(request.args.get('race'))
+    graph, swaps_list = gr.graph_until_ranking(year, race)
+    weighted_graph = gr.weighted_graph(graph, swaps_list)[0]
+    result = mt.weighted_graph_metrics(weighted_graph, race)
+    return jsonify(result)
+
+@api.route('metrics/branking', methods=['GET'])
+def get_ranking_bonus_metrics():
+    year = request.args.get('year')
+    race = int(request.args.get('race'))
+    graph, swaps_list = gr.graph_until_ranking(year, race)
+    bonuses = {1: 4, 2: 3, 3: 2}
+    weighted_graph = gr.weighted_graph(graph, swaps_list, bonuses)[0]
+    result = mt.weighted_graph_metrics(weighted_graph, race)
+    return jsonify(result)
 
 @api.route('metrics/season', methods=['GET'])
 def get_season_metrics():
