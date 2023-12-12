@@ -70,34 +70,38 @@ $(document).ready(function() {
             });
         });
     }
+
+    function deleteTrace(index) {
+        const containers = document.querySelectorAll('.js-plotly-plot');
+        containers.forEach(container => {
+        const fullData = container._fullData;
+        if (fullData && fullData.length > index) {
+            Plotly.deleteTraces(container.id, index);
+        }
+    });
+    }
     
     function refreshList() {
         const graphList = document.getElementById('graphList');
         graphList.innerHTML = ''; // Vacía el contenido antes de cargar los nuevos elementos
-
         graphsArray.forEach(element => {
             const [year, race, isBonus] = element;
             const listItem = document.createElement('li');
             listItem.classList.add('list-group-item');
-
-            // Crear el contenido con la cruz
             const content = document.createElement('span');
             content.innerText = `Temporada ${year} Jornada ${race} ${isBonus ? 'bonificado' : 'no bonificado'}`;
-
-            // Crear el botón de eliminar (cruz)
             const deleteButton = document.createElement('span');
             deleteButton.classList.add('delete-button');
             deleteButton.innerHTML = '&#10006;'; // Esto es el carácter unicode para la cruz
             deleteButton.href = '#';
             deleteButton.onclick = function() {
-                // Lógica para eliminar este elemento específico
+                const index = $(this).parent().index();
+                deleteTrace(index);
+                graphsArray.splice(index, 1);
                 listItem.remove();
             };
-
-            // Añadir el contenido y la cruz al elemento li
             listItem.appendChild(content);
             listItem.appendChild(deleteButton);
-
             graphList.appendChild(listItem);
         });
     }
@@ -119,7 +123,7 @@ $(document).ready(function() {
         e.preventDefault();
         const race = $('#racesSelectorPlotsModal').val();
         const year = $('#yearSelectorPlotsModal').val();
-        const isBonus = $('#bonificationCheckboxPlotsModal').is(':checked');
+        const isBonus = $('#bonificationCheckbox').is(':checked');
         $('#metricsModalPlots').modal('hide');
         loadNewPlot(year, race, isBonus);
     });
