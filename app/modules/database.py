@@ -126,7 +126,7 @@ def competitor_in_position_in_ranking(position, ranking, year):
 def positions_swaps_in_ranking(year, ranking):
     result = []
     competitors_number = num_competitors(year)
-    for i in range(1, competitors_number):
+    for i in range(2, competitors_number):
         competitor_in_current_position = competitor_in_position_in_ranking(i, ranking, year)
         if set(competitors_above(competitor_in_current_position, year, ranking)) != set(
                 competitors_above(competitor_in_current_position, year, ranking - 1)):
