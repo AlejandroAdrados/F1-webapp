@@ -71,16 +71,35 @@ def load_data(year1, year2):
                                     points=points
                                 )
                                 db.session.add(new_result)
+            initialize_result(year, len(rows))
             if not existing_result:
                 print(f"Year {year} races data added")
             else:
                 print(f"Year {year} races data updated")
         else:
             print(f'Error fetching page. Status code: {response.status_code}')
-
     db.session.commit()
 
 def add_sprint_points(driver, race, points):
     result = YearResults.query.filter_by(driver_name=driver, race_name=race).first()
     if result:
         result.points += points
+
+def initialize_result(year, ranking):
+    results = (
+        db.session.query(YearResults.driver_name, YearResults.team)
+        .filter(YearResults.year == year, YearResults.race_number <= ranking)
+        .distinct()
+        .all()
+    )
+    for driver, team in results:
+        result0 = YearResults(
+            year=year,
+            race_number=0,
+            race_name=" ",
+            position=1,
+            driver_name=driver,
+            team=team,
+            points=0
+        )
+        db.session.add(result0)

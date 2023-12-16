@@ -12,7 +12,7 @@ def season_metrics(year, ranking, bonus):
             weighted_graph = graphs.weighted_graph(graph, swaps_list, bonuses)[0]
         else:
             weighted_graph = graphs.weighted_graph(graph, swaps_list)[0]
-        ranking_metrics = metrics.weighted_graph_metrics(weighted_graph, ranking)
+        ranking_metrics = metrics.weighted_graph_metrics(weighted_graph, rank+1)
         season_metrics.append((ranking_metrics, year, rank+1))
     return season_metrics
 
