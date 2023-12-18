@@ -1,7 +1,6 @@
 import networkx as nx
-import pandas as pd
 import math
-
+import app.modules.graphs as graphs
 
 # Función que calcula el grado normalizado de un grafo
 def normalized_degree(graph):
@@ -49,7 +48,7 @@ def evolutionary_kendall_correlation(graph, num_rankings):
     return coefficient
 
 
-# Función que imprime las métricas de un grafo ponderado
+# Función que devuelve las métricas de un grafo ponderado
 def weighted_graph_metrics(graph, num_rankings):
     normalized_degree_value = normalized_degree(graph)
     normalized_weight_value = normalized_weight(graph, num_rankings)
@@ -68,7 +67,7 @@ def weighted_graph_metrics(graph, num_rankings):
     return stats
 
 
-# Función que imprime las métricas de un grafo no ponderado
+# Función que devuelve las métricas de un grafo no ponderado
 def unweighted_graph_metrics(graph):
     normalized_degree_value = normalized_degree(graph)
     clustering_coefficient_value = clustering_coefficient(graph)
@@ -82,30 +81,16 @@ def unweighted_graph_metrics(graph):
 
     return stats
 
-
-# Función que compara las métricas de varios grafos
-def comparation_metrics(graphs):
-    statistics = []
-    i = 0
-    for elements in graphs:
-        i += 1
-        current_graph = elements[0][0]
-        year = elements[1]
-        ranking = elements[2]
-        normalized_degree_value = normalized_degree(current_graph)
-        normalized_weight_value = normalized_weight(current_graph, ranking)
-        clustering_coefficient_value = clustering_coefficient(current_graph)
-        kendall_coefficient = kendall_correlation(current_graph)
-        evolutionary_kendall_coefficient = evolutionary_kendall_correlation(current_graph, ranking)
-
-        statistics.append({
-            'Grafo': f'Jornada {ranking} año {year}',
-            'Grado Normalizado': normalized_degree_value,
-            'Peso Normalizado': normalized_weight_value,
-            'Coeficiente de Clustering': clustering_coefficient_value,
-            'Kendall': kendall_coefficient,
-            'Kendall Evolutivo': evolutionary_kendall_coefficient
-        })
-
-    stats_df = pd.DataFrame(statistics)
-    return stats_df
+# Función que devuelve las métricas de una temporada
+def season_metrics(year, ranking, bonus):
+    season_metrics = []
+    for rank in range(ranking):
+        graph, swaps_list = graphs.graph_until_ranking(year, rank+1)
+        if bonus:
+            bonuses = {1: 4, 2: 3, 3: 2}
+            weighted_graph = graphs.weighted_graph(graph, swaps_list, bonuses)[0]
+        else:
+            weighted_graph = graphs.weighted_graph(graph, swaps_list)[0]
+        ranking_metrics = weighted_graph_metrics(weighted_graph, rank+1)
+        season_metrics.append((ranking_metrics, year, rank+1))
+    return season_metrics

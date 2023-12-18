@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request
 from app.modules import web_data as wd
 from app.modules import database as db
 from app.modules import graphs as gr
-from app.modules import plots as pl
 from app.modules import metrics as mt
 
 api = Blueprint('api', __name__, url_prefix='/api')
@@ -11,13 +10,9 @@ api = Blueprint('api', __name__, url_prefix='/api')
 def get_results():
     year = request.args.get('year')
     race = request.args.get('race')
-    
-    # Verifica si los parámetros fueron proporcionados en la solicitud
     if race and year:
         results = db.total_ranking(year, race)
         return jsonify(results)
-    
-    # En caso de que los parámetros no estén presentes, devuelve un error o una respuesta indicando que faltan parámetros
     return jsonify({'error': 'Se requieren los parámetros año y jornada'}), 400
 
 @api.route('/results', methods=['POST'])
@@ -121,12 +116,12 @@ def get_ranking_bonus_metrics():
 def get_season_metrics():
     year = request.args.get('year')
     race = int(request.args.get('race'))
-    result = pl.season_metrics(year, race, False)
+    result = mt.season_metrics(year, race, False)
     return jsonify(result)
 
 @api.route('metrics/bseason', methods=['GET'])
 def get_season_bonus_metrics():
     year = request.args.get('year')
     race = int(request.args.get('race'))
-    result = pl.season_metrics(year, race, True)
+    result = mt.season_metrics(year, race, True)
     return jsonify(result)
