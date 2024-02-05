@@ -46,7 +46,7 @@ def weighted_graph(G, swaps_list, bonuses={}):
     return G, important_labels
 
 def convert_networkx_to_plotly(G, edge_labels):
-    pos = nx.shell_layout(G)
+    pos = nx.kamada_kawai_layout(G)
 
     edge_trace = go.Scatter(
         x=[],

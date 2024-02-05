@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from ftfy import fix_text
 import requests
 from ..models import YearResults
 from .. import db
@@ -73,7 +74,7 @@ def get_results(race_content, sprint_content, race_info):
         race_rows = table_race.find('tbody').find_all('tr')
         for race_row in race_rows:
             driver_info = extract_info_from_row(race_row)
-            points = int(driver_info.get("points"))
+            points = float(driver_info.get("points"))
             if sprint_content:
                 sprint_table = sprint_content.find('table', {'class': 'resultsarchive-table'})
                 if sprint_table:
@@ -83,12 +84,13 @@ def get_results(race_content, sprint_content, race_info):
                         if driver_info.get("name") == driver_sprint_info.get("name"):
                             points += int(driver_sprint_info.get("points"))
                             break
-            return add_result(race_info, driver_info, points)
+            add_result(race_info, driver_info, points)
 
 def extract_info_from_row(row):
     cells = row.find_all('td')
     position = cells[1].text.strip()
     driver_name = cells[3].text.strip().replace('\n', ' ')[:-4]
+    driver_name = fix_text(driver_name)
     team = cells[4].text.strip()
     points = cells[7].text.strip()                        
     return {"position": position, "name": driver_name, "team": team, "points": points}

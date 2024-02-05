@@ -58,7 +58,7 @@ def competitor_position_history(driver_name, year, ranking):
 
 # Función que devuelve la lista de pilotos de un año
 def competitors_list(year):
-    result = db.session.query(db.distinct(YearResults.driver_name)).filter(YearResults.year == year)
+    result = db.session.query(db.distinct(YearResults.driver_name)).filter(YearResults.year == year).order_by(YearResults.driver_name)
     serialized_result = [row[0] for row in result]
     return serialized_result
 
@@ -71,16 +71,17 @@ def competitors_below(driver_name, year, ranking):
     results = total_ranking(year, ranking)
     position = competitor_position_in_ranking(driver_name, year, ranking)
     sorted_results = sorted(results, key=lambda x: x['total_points'], reverse=True)
-    drivers_above = [result['driver_name'] for result in sorted_results[position:]]
-    return drivers_above
+    return [result['driver_name'] for result in sorted_results[position:]]
 
 # Función que devuelve los pilotos por encima de un piloto en una ranking
 def competitors_above(driver_name, year, ranking):
     results = total_ranking(year, ranking)
     position = competitor_position_in_ranking(driver_name, year, ranking)
-    sorted_results = sorted(results, key=lambda x: x['total_points'], reverse=True)
-    drivers_below = [result['driver_name'] for result in sorted_results[:position - 1]]
-    return drivers_below
+    if position:
+        sorted_results = sorted(results, key=lambda x: x['total_points'], reverse=True)
+        return [result['driver_name'] for result in sorted_results[:position - 1]]
+    else:
+        return None
 
 # Función que devuelve el piloto que ocupa una posición en una ranking
 def competitor_in_position_in_ranking(position, ranking, year):
@@ -104,14 +105,15 @@ def positions_swaps_in_ranking(year, ranking):
     competitors_number = num_competitors(year)
     for i in range(1, competitors_number):
         competitor_in_current_position = competitor_in_position_in_ranking(i, ranking, year)
-        if set(competitors_above(competitor_in_current_position, year, ranking)) != set(
-                competitors_above(competitor_in_current_position, year, ranking - 1)):
-            competitors_above_currently = set(competitors_above(competitor_in_current_position, year, ranking - 1))
-            competitors_below_currently = set(competitors_below(competitor_in_current_position, year, ranking))
-            overtaken_competitors = list(competitors_above_currently & competitors_below_currently)
-            current_position = competitor_position_in_ranking(competitor_in_current_position, year, ranking)
-            if overtaken_competitors:
-                result.append((current_position, competitor_in_current_position, overtaken_competitors))
+        competitors_above_current_ranking = competitors_above(competitor_in_current_position, year, ranking)
+        competitors_above_past_ranking = competitors_above(competitor_in_current_position, year, ranking - 1)
+        if competitors_above_past_ranking:
+            if set(competitors_above_current_ranking) != set(competitors_above_past_ranking):
+                competitors_below_current_ranking = competitors_below(competitor_in_current_position, year, ranking)
+                overtaken_competitors = list(set(competitors_above_past_ranking) & set(competitors_below_current_ranking))
+                current_position = competitor_position_in_ranking(competitor_in_current_position, year, ranking)
+                if overtaken_competitors:
+                    result.append((current_position, competitor_in_current_position, overtaken_competitors))
     return result
 
 # Función que devuelve los cambios de posición hasta una ranking
