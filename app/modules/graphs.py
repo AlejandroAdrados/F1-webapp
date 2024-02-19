@@ -46,12 +46,12 @@ def weighted_graph(G, swaps_list, bonuses={}):
     return G, important_labels
 
 def convert_networkx_to_plotly(G, edge_labels):
-    pos = nx.kamada_kawai_layout(G)
-
+    #pos = nx.kamada_kawai_layout(G)
+    pos = nx.shell_layout(G)
     edge_trace = go.Scatter(
         x=[],
         y=[],
-        line=dict(width=0.5, color='#888'),
+        line=dict(width=0.5, color='#000'),
         hoverinfo='text',
         mode='lines')
 
@@ -112,11 +112,10 @@ def convert_networkx_to_plotly(G, edge_labels):
     node_trace['mode'] = 'text'
 
 
-
+    node_trace['textfont'] = dict(color='black')
     fig = go.Figure(data=[edge_trace, node_trace],
                    layout=go.Layout(
-                       title="",
-                       #plot_bgcolor='white',
+                        plot_bgcolor='white',
                         showlegend=False,
                         hovermode='closest',
                         margin=dict(b=20, l=5, r=5, t=40),
@@ -126,29 +125,34 @@ def convert_networkx_to_plotly(G, edge_labels):
                             xref="paper", yref="paper",
                             x=0.005, y=-0.002)],
                         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, visible=False),
-                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                        height=800  # Establecer la altura del cuadro de la figura
                     )
                )
+    
+    
     
     # Añadir etiquetas personalizadas de las aristas al gráfico
     for edge, label in edge_labels.items():
         x0, y0 = pos[edge[0]]
         x1, y1 = pos[edge[1]]
-        x_coords = [x0, x1, None]
-        y_coords = [y0, y1, None]
         # Calcular el punto medio de la arista para colocar la etiqueta
         x_mid = np.mean([x0, x1])
         y_mid = np.mean([y0, y1])
 
+        fig.add_shape(
+            type="line",
+            x0=x0, y0=y0, x1=x1, y1=y1,
+            line=dict(width=label, color='darkgray'),
+        )
         fig.add_trace(go.Scatter(
-            x=[x_mid],  # Colocar el texto en el punto medio x de la arista
-            y=[y_mid],  # Colocar el texto en el punto medio y de la arista
+            x=[x_mid],
+            y=[y_mid],
             mode='text',
             text=[f'{label}'],
-            textfont=dict(size=10),  # Ajustar el tamaño de la fuente
-            hoverinfo='none',
+            textfont=dict(size=12, color='black'),  # Ajustar el tamaño y color de la fuente del texto
+            hoverinfo='text',
             showlegend=False
         ))
-
     return fig
 

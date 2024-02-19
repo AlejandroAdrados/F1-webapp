@@ -50,6 +50,13 @@ $(document).ready(function() {
     
                 if (existingPlot) {
                     Plotly.addTraces(divId, data);
+                    // Lógica para descargar svgs (TFG matemáticas)
+                    /*var fechaHoraActual = new Date();
+                    var nombreArchivo = 'plot_' + fechaHoraActual.toLocaleString().replace(/[^\w\s]/gi, '').replace(/ /g, '_');
+                    Plotly.downloadImage(divId, {
+                        format: 'svg', // Formato de exportación (puede ser png, jpeg, webp, svg)
+                        filename: nombreArchivo // Nombre de archivo sin extensión
+                    }); */
                 } else {
                     const div = document.createElement('div');
                     div.id = divId;
@@ -64,9 +71,15 @@ $(document).ready(function() {
                             title: `Valor de ${metrica}`
                         }
                     };
-    
                     Plotly.newPlot(div.id, data, layout);
+                    window.addEventListener('resize', function() {
+                        Plotly.relayout(divId, {
+                            width: $(`#${divId}`).width(), // Ancho del contenedor del gráfico
+                            height: $(`#${divId}`).height() // Alto del contenedor del gráfico
+                        });
+                    });
                 }
+
             });
         });
     }

@@ -17,11 +17,30 @@ $(document).ready(function() {
                 $('#loadAnotherGraph').show();
                 graphsArray.push([year, race, isBonus])
                 refreshList();
+                const title = $('<h4>')
+                    .text(`Grafo temporada ${year} jornada ${race}`)
+                    .css({ // Tamaño de fuente más pequeño
+                        textAlign: 'center' // Centrado horizontal
+                    })
+                    .appendTo('#graph');
                 const graphDiv = $('<div>').addClass('graph').appendTo('#graph');
                 const graphId = `graph_${graphData.length + 1}`;
                 $('<div>').attr('id', graphId).appendTo(graphDiv);
-                data.layout.title=`Grafo temporada ${year} jornada ${race}`;
-                Plotly.newPlot(graphId, data);
+                const config = { resposive: true };
+                Plotly.newPlot(graphId, data, config);
+                window.addEventListener('resize', function() {
+                    Plotly.relayout(graphId, {
+                        width: graphDiv.width(), // Ancho del contenedor del gráfico
+                        height: graphDiv.height() // Alto del contenedor del gráfico
+                    });
+                });
+                //Lógica para descargar svgs (TFG matemáticas)
+                /*var date = new Date();
+                var filename = 'graph_' + date.toLocaleString().replace(/[^\w\s]/gi, '').replace(/ /g, '_');
+                Plotly.downloadImage(graphId, {
+                    format: 'svg',
+                    filename: filename
+                });*/
                 graphData.push(data);
     
                 if (graphData.length >= 1) {
@@ -63,9 +82,14 @@ $(document).ready(function() {
 
     function deleteGraph(index){
         const container = document.getElementById('graph');
-        if (container && container.childNodes.length > index) {
-            const element = container.childNodes[index];
-            container.removeChild(element);
+        const elementsPerGraph = 2; //Título y grafo
+        const startChildIndex = index * elementsPerGraph;
+        
+        if (container && container.childNodes.length > startChildIndex + 1) {
+            for (let i = 0; i < elementsPerGraph; i++) {
+                const element = container.childNodes[startChildIndex];
+                container.removeChild(element);
+            }
         }
     }
 
