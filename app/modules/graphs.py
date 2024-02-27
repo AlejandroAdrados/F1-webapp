@@ -41,6 +41,8 @@ def weighted_graph(G, swaps_list, bonuses={}):
                     # Agrega las aristas con pesos al grafo
     for edge, weight in edge_weights.items():
         G.add_edge(edge[0], edge[1], weight=weight)
+    # Si se quiere exportar el grafo:
+    # nx.write_gml(G, "app/static/graph.gml")
     labels = nx.get_edge_attributes(G, "weight")
     important_labels = {edge: weight for edge, weight in labels.items() if weight > 1}
     return G, important_labels
@@ -145,14 +147,14 @@ def convert_networkx_to_plotly(G, edge_labels):
             x0=x0, y0=y0, x1=x1, y1=y1,
             line=dict(width=label, color='darkgray'),
         )
-        fig.add_trace(go.Scatter(
-            x=[x_mid],
-            y=[y_mid],
-            mode='text',
-            text=[f'{label}'],
-            textfont=dict(size=12, color='black'),  # Ajustar el tamaño y color de la fuente del texto
-            hoverinfo='text',
-            showlegend=False
-        ))
+        fig.add_annotation(
+            x=x_mid, y=y_mid,  # Coordenadas del texto
+            text=label,  # Texto del label
+            font=dict(size=12, color='black'),  # Ajustar el tamaño y color de la fuente del texto
+            showarrow=False,  # No mostrar flecha
+            xref="x", yref="y",
+            bgcolor="white",  # Fondo blanco
+            borderpad=2,  # Espacio entre el texto y el borde
+            opacity=0.8  # Opacidad del fondo blanco
+        )
     return fig
-

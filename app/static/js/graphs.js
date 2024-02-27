@@ -34,13 +34,6 @@ $(document).ready(function() {
                         height: graphDiv.height() // Alto del contenedor del gráfico
                     });
                 });
-                //Lógica para descargar svgs (TFG matemáticas)
-                /*var date = new Date();
-                var filename = 'graph_' + date.toLocaleString().replace(/[^\w\s]/gi, '').replace(/ /g, '_');
-                Plotly.downloadImage(graphId, {
-                    format: 'svg',
-                    filename: filename
-                });*/
                 graphData.push(data);
     
                 if (graphData.length >= 1) {
