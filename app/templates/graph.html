@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 id="pageTitle">Grafo de competitividad</h1>
+    <h1 id="pageTitle">Grafos de competitividad</h1>
     <div id="loading-spinner" class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
@@ -26,20 +26,18 @@
                         <div class="mb-3">
                             <label for="year" class="form-label">Año</label>
                             <select class="form-select" id="yearSelectorModal" name="year">
-                                <!-- Opciones de jornada llenadas dinámicamente -->
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="races" class="form-label">Jornada</label>
                             <select class="form-select" id="racesSelectorModal" name="races">
-                                <!-- Opciones de año llenadas dinámicamente -->
                             </select>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="bonificationCheckbox" name="bonification">
                             <label class="form-check-label" for="bonificationCheckbox">Grafo bonificado por posiciones de podio</label>
                         </div>
-                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <button type="submit" class="btn btn-secondary">Enviar</button>
                     </form>
                 </div>
             </div>

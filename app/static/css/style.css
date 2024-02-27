@@ -1,12 +1,15 @@
 /* Estilos personalizados */
-body {
-    padding-top: 56px; /* Ajusta el cuerpo de la página para la barra de navegación fija */
+.main {
+    /* Estilos para el contenido principal */
+    padding: 20px;
+    padding-top: 50px;
 }
 
 .sidebar {
+    padding-top: 50px;
     background-color: #f8f9fa; /* Color de fondo gris claro para la barra lateral */
     border-right: 1px solid #dee2e6; /* Borde derecho para separar del contenido principal */
-    height: 100vh; /* Altura completa de la barra lateral */
+    min-height: 100vh; /* Altura completa de la barra lateral */
 }
 
 .sidebar-heading {
@@ -28,4 +31,8 @@ body {
 
 .list-group-item a:hover {
     text-decoration: none; /* Evita que el subrayado aparezca al pasar el mouse */
+}
+
+#pageTitle {
+    margin-bottom: 20px;
 }

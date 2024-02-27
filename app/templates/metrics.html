@@ -1,65 +1,105 @@
 {% extends 'base.html' %}
 
 {% block page_styles %}
-    <style>
-        h1 {
-            margin-bottom: 20px;
-        }
-        .info-box {
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .info-title {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .info-value {
-            font-size: 2.5em;
-            font-weight: bold;
-        }
-    </style>
+<link rel="stylesheet" href="../static/css/metrics_style.css">
 {% endblock %}
 
 {% block content %}
-    <h1>Métricas</h1>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="info-box">
-                <div class="info-title">Grado Normalizado:</div>
-                <div class="info-value" id="normalized-degree"></div>
+<h1 id="pageTitle">Resumen de métricas</h1>
+<div class="row">
+    <div class="col-md-12">
+        <div class="info-box">
+            <div class="info-title">
+                Grado Normalizado 
+                <i class="bi bi-info-circle info-icon" title="Información"></i>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="info-box">
-                <div class="info-title">Peso Normalizado:</div>
-                <div class="info-value" id="normalized-weight"></div>
+            <div class="info-content">
+                <p>El grado medio normalizado es una medida que indica qué
+                     tan conectado está un punto en una red en comparación
+                      con el máximo posible de conexiones que podría tener.</p>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="info-box">
-                <div class="info-title">Coeficiente de Clustering:</div>
-                <div class="info-value" id="clustering-coefficient"></div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="info-box">
-                <div class="info-title">Coeficiente de Kendall:</div>
-                <div class="info-value" id="kendall"></div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="info-box">
-                <div class="info-title">Coeficiente de Kendall evolutivo:</div>
-                <div class="info-value" id="evolutionary-kendall"></div>
+            <div class="progress-bar-container">
+                <span class="info-value" id="normalized-degree"></span>
+                <div class="progress-bar">
+                    <div class="progress-level" id="normalized-degree-level"></div>
+                </div>
             </div>
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="info-box">
+            <div class="info-title">
+                Peso Normalizado:
+                <i class="bi bi-info-circle info-icon" title="Información"></i>
+            </div>
+            <div class="info-content">
+                <p>Información sobre Peso Normalizado...</p>
+            </div>
+            <div class="progress-bar-container">
+                <span class="info-value" id="normalized-weight"></span>
+                <div class="progress-bar">
+                    <div class="progress-level" id="normalized-weight-level"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="info-box">
+            <div class="info-title">
+                Coeficiente de Clustering:
+                <i class="bi bi-info-circle info-icon" title="Información"></i>
+            </div>
+            <div class="info-content">
+                <p>Información sobre el Coeficiente de Clustering...</p>
+            </div>
+            <div class="progress-bar-container">
+                <span class="info-value" id="clustering-coefficient"></span>
+                <div class="progress-bar">
+                    <div class="progress-level" id="clustering-coefficient-level"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-12">
+        <div class="info-box">
+            <div class="info-title">
+                Coeficiente de Kendall:
+                <i class="bi bi-info-circle info-icon" title="Información"></i>
+            </div>
+            <div class="info-content">
+                <p>Información sobre el Coeficiente de Kendall...</p>
+            </div>
+            <div class="progress-bar-container">
+                <span class="info-value" id="kendall"></span>
+                <div class="progress-bar">
+                    <div class="progress-level" id="kendall-level"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-12">
+        <div class="info-box">
+            <div class="info-title">
+                Coeficiente de Kendall Evolutivo:
+                <i class="bi bi-info-circle info-icon" title="Información"></i>
+            </div>
+            <div class="info-content">
+                <p>Información sobre el Coeficiente de Kendall Evolutivo...</p>
+            </div>
+            <div class="progress-bar-container">
+                <span class="info-value" id="evolutionary-kendall"></span>
+                <div class="progress-bar">
+                    <div class="progress-level" id="evolutionary-kendall-level"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
 {% endblock %}
 
 {% block page_scripts %}
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="../static/js/metrics_dashboard.js"></script>
+<script src="../static/js/metrics_dashboard.js"></script>
 {% endblock %}
