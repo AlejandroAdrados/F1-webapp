@@ -1,4 +1,5 @@
 const isBonus = urlParams.get('bonus');
+
 function setProgressLevel(metricId, value) {
         const progressBar = document.getElementById(`${metricId}-level`);
         const normalizedValue = Math.min(Math.max(value, 0), 1);
@@ -31,13 +32,13 @@ function getData() {
     });
 }
 
-$(document).ready(function () {
-    getData();
-});
-
 document.querySelectorAll('.info-icon').forEach(icon => {
     icon.addEventListener('click', () => {
         const infoContent = icon.parentElement.nextElementSibling;
         infoContent.classList.toggle('active');
     });
+});
+
+$(document).ready(function () {
+    getData();
 });
