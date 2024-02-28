@@ -1,6 +1,4 @@
-/* Estilos personalizados */
 .main {
-    /* Estilos para el contenido principal */
     padding: 20px;
     padding-top: 50px;
 }
@@ -35,4 +33,31 @@
 
 #pageTitle {
     margin-bottom: 20px;
+}
+
+.info-box {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.info-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 10px;
+}
+.info-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+    display: block;
+}
+.info-text {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    display: block;
 }

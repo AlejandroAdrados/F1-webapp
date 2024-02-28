@@ -36,20 +36,19 @@ def get_races():
         if item['year'] == int(year):
             return jsonify(item)
         
-@api.route('/competitor/score', methods=['GET'])
+@api.route('/competitor/info', methods=['GET'])
 def get_competitor_score():
     year = request.args.get('year')
     race = request.args.get('race')
     driver = request.args.get('driver')
-    result = db.competitor_score_in_ranking(driver, year, race)
-    return jsonify(result)
-
-@api.route('/competitor/position', methods=['GET'])
-def get_competitor_position():
-    year = request.args.get('year')
-    race = request.args.get('race')
-    driver = request.args.get('driver')
-    result = db.competitor_position_in_ranking(driver, year, race)
+    score = db.competitor_score_in_ranking(driver, year, race)
+    team = db.competitor_team_in_year(driver, year)
+    position = db.competitor_position_in_ranking(driver, year, race)
+    result = {
+        'score': score,
+        'team': team,
+        'position': position
+    }
     return jsonify(result)
 
 @api.route('/competitor/history', methods=['GET'])

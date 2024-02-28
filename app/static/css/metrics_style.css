@@ -1,31 +1,11 @@
-.info-box {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-.info-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 10px;
-}
-.info-value {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #333;
-    display: block;
-}
 .info-icon {
-    font-size: 1.2em; /* Tamaño del icono ajustado */
-    color: #777; /* Color grisáceo por defecto */
+    font-size: 1.2em;
+    color: #777;
     cursor: pointer;
-    transition: color 0.3s; /* Transición de color al pasar el ratón */
+    transition: color 0.3s
 }
 .info-icon:hover {
-    color: black; /* Color negro al pasar el ratón */
+    color: black;
 }
 .progress-bar-container {
     display: flex;
@@ -46,8 +26,8 @@
     height: 100%;
     border-radius: 5px;
     background-color: black;
-    transition: width 3s ease; /* Ajuste de velocidad de transición */
-    width: 0%; /* Inicialmente vacío */
+    transition: width 3s ease;
+    width: 0%;
 }
 .info-content {
     display: none;
@@ -57,7 +37,7 @@
     border-radius: 5px;
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    width: 500px; /* Cambié el ancho a 300px */
+    width: 500px;
     z-index: 100;
     transform-origin: top center;
     transition: transform 0.3s ease-in-out;

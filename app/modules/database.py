@@ -39,6 +39,17 @@ def competitor_score_in_ranking(driver_name, year, race_number):
         return result
     else:
         return 0
+    
+# Función que devuelve el equipo de un piloto en una temporada
+def competitor_team_in_year(driver_name, year):
+    result = db.session.query(YearResults.team).\
+        filter(YearResults.driver_name == driver_name).\
+        filter(YearResults.year == year).\
+        first()
+    if result:
+        return result[0]
+    else:
+        return None
 
 # Función que devuelve la posición de un piloto en una clasificación
 def competitor_position_in_ranking(driver_name, year, ranking):
