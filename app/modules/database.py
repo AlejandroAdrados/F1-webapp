@@ -12,7 +12,6 @@ def total_ranking(year, ranking):
         {'driver_name': row.driver_name, 'team': row.team, 'total_points': row.total_points}
         for row in results
     ]
-
     return serialized_results
 
 # Función que devuelve el año y el número de temporadas que hay en la bbdd
@@ -25,8 +24,12 @@ def get_info():
         {'year': row.year, 'races': row.max_num_race}
         for row in results
     ]
-
     return serialized_results
+
+# Función que devuelve el número de carrearas de un año
+def get_races(year):
+    result = db.session.query(db.func.max(YearResults.race_number)).filter(YearResults.year == year).scalar()
+    return result
 
 # Función que devuelve los puntos de un piloto en una ranking
 def competitor_score_in_ranking(driver_name, year, race_number):

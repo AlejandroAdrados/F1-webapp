@@ -2,10 +2,17 @@ const driver = urlParams.get('driver');
 
 function getInfo() {
     $('#driver-text').text(driver);
-    $.get(`/api/competitor/info?year=${year}&race=${race}&driver=${driver}`, function (data) {
-        $('#score-text').text(data["score"]);
-        $('#position-text').text(data["position"] + "º");
-        $('#team-text').text(data["team"]);
+    $.ajax({
+        url: `/api/competitor/info?year=${year}&race=${race}&driver=${driver}`,
+        method: 'GET',
+        success: function(data) {
+            $('#score-text').text(data["score"]);
+            $('#position-text').text(data["position"] + "º");
+            $('#team-text').text(data["team"]);
+        },
+        error: function() {
+            window.location.href = '/error';
+        }
     });
 }
 

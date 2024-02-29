@@ -20,7 +20,10 @@
 {% block page_scripts %}
     <script>
         $(document).ready(function() {
-            $.get(`/api/results?year=${year}&race=${race}`, function(data) {
+            $.ajax({
+            url: `/api/results?year=${year}&race=${race}`,
+            method: 'GET',
+            success: function(data) {
                 var tabla = '';
                 var i = 0;
                 data.forEach(function(item) {
@@ -28,7 +31,11 @@
                     tabla += '<tr><td>' + i + '</td><td>' + item.driver_name + '</td><td>' + item.team + '</td><td>' + item.total_points + '</td></tr>';
                 });
                 $('#tablaClasificacion').html(tabla);
-            });
+            },
+            error: function(xhr, status, error) {
+                window.location.href = '/error';
+            }
         });
+    });
     </script>
 {% endblock %}
