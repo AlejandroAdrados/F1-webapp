@@ -44,7 +44,8 @@ function loadNewPlot(year, race, isBonus) {
                     y: metricas[metrica],
                     type: 'scatter',
                     mode: 'lines',
-                    name: `Temporada ${year}`
+                    name: `Temporada ${year}`,
+                    hovertemplate: '%{y:.4f}',
                 }
             ];
 

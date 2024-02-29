@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 id="pageTitle">Grafos de competitividad</h1>
-    <div id="loading-spinner" class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
+    <div id="headerContainer" style="display: flex; align-items: baseline;">
+        <h1 id="pageTitle">Grafos de competitividad &nbsp;</h1>
+        <div id="loading-spinner" class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
     <div id="graph"></div>
 {% endblock %}

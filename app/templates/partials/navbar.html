@@ -3,7 +3,7 @@
   <div class="container">
       <a>
           <a class="navbar-brand" href="/">Fórmula 1 WebApp</a>
-          <span class="navbar-text ms-2" id="jornadaAnioInfo"></span>
+          <span class="navbar-text ms-2" id="yearRaceInfo"></span>
       </a>
       <!-- Botón para colapsar la barra de navegación en dispositivos móviles -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,7 +12,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                  <a class="nav-link" id="actualizarDB" href="#">Actualizar Base de Datos</a>
+                  <a class="nav-link" id="actualizarDB" href="#" onclick="showModal()">Actualizar Base de Datos</a>
               </li>
           </ul>
       </div>
@@ -22,28 +22,26 @@
 
 
 <!-- Update DataBase Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="databaseModal" tabindex="-1" aria-labelledby="databaseModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Elige una opción</h5>
+        <h5 class="modal-title" id="databaseModalLabel">Actualizar Base de Datos</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>¿Cómo quieres actualizar la base de datos?</p>
+        <p id="modal-text" style="display: none;"></p>
         <div class="text-center mt-3">
-          <div class="spinner-border text-primary" role="status" style="display: none;">
-            <span class="visually-hidden">Cargando...</span>
+          <div class="progress" style="height: 20px; display: none;">
+            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
         </div>
         <!-- Nuevos campos para seleccionar rango de años -->
-        <div class="row mt-3">
+        <div class="row mt-3" style="display: none;">
           <div class="col">
             <label for="yearFrom" id="labelYearFrom">Desde:</label>
             <select class="form-select" id="yearFrom" onchange="updateYearToOptions()">
-              <!-- Generar opciones desde 1950 hasta 2023 -->
               <option value="">Selecciona un año</option>
-              <!-- JavaScript para generar las opciones -->
               <script>
                 for (let year = 1950; year <= 2023; year++) {
                   document.write(`<option value="${year}">${year}</option>`);
@@ -54,14 +52,13 @@
           <div class="col">
             <label for="yearTo" id="labelYearTo">Hasta:</label>
             <select class="form-select" id="yearTo">
-              <option value="">Selecciona un año</option>
             </select>
           </div>
         </div>
         <!-- Botones para importar desde archivo local e internet -->
-        <button id="importarArchivo" class="btn btn-secondary mt-3">Importar desde Archivo Local</button>
-        <input type="file" id="archivoOption" style="display: none;">
-        <button id="apiOption" class="btn btn-primary mt-3" onclick="importFromInternet()">Importar desde Internet</button>
+        <button id="fileOption" class="btn btn-secondary mt-3" onclick="getResultsFromFile()">Actualizar desde Archivo Local</button>
+        <input type="file" id="fileInput" style="display: none;">
+        <button id="internetOption" class="btn btn-secondary mt-3" onclick="importFromInternet()">Actualizar desde Internet</button>
       </div>
     </div>
   </div>
