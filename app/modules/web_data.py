@@ -4,39 +4,39 @@ import requests
 from ..models import YearResults
 from .. import db
 
-def load_data(year1, year2):
-    for year in range(year1, year2+1):
-        url = f'https://www.formula1.com/en/results.html/{year}/races.html'
-        response = requests.get(url)
-        if response.status_code == 200:
-            html = response.text
-            soup = BeautifulSoup(html, 'html.parser')
-            rows = soup.find('table', {'class': 'resultsarchive-table'}).find('tbody').find_all('tr')
-            counter = 0
-            for row in rows:
-                counter += 1
-                race_name = row.find('td', {'class': 'dark bold'}).text.strip()
-                race_url = row.find('a')['href']
-                race_url = f'https://www.formula1.com{race_url}'
-                sprint_url = f'{race_url[:-16]}sprint-results.html'
-                existing_result = YearResults.query.filter_by(year=year, race_name=race_name).first()
-                race_info = {"year": year, "number": counter, "name": race_name}
-                response_race = requests.get(race_url)
-                
-                if not existing_result: 
-                    if response_race.status_code == 200:
-                        html_race = response_race.text
-                        race_content = BeautifulSoup(html_race, 'html.parser')
-                        sprint_content = is_sprint_race(sprint_url)
-                        get_results(race_content, sprint_content, race_info)                       
-            initialize_result(year, len(rows))
-            if not existing_result:
-                print(f"Year {year} races data added")
-            else:
-                print(f"Year {year} races data updated")
+def load_season(year):
+    url = f'https://www.formula1.com/en/results.html/{year}/races.html'
+    response = requests.get(url)
+    if response.status_code == 200:
+        html = response.text
+        soup = BeautifulSoup(html, 'html.parser')
+        rows = soup.find('table', {'class': 'resultsarchive-table'}).find('tbody').find_all('tr')
+        counter = 0
+        for row in rows:
+            counter += 1
+            race_name = row.find('td', {'class': 'dark bold'}).text.strip()
+            race_url = row.find('a')['href']
+            race_url = f'https://www.formula1.com{race_url}'
+            sprint_url = f'{race_url[:-16]}sprint-results.html'
+            existing_result = YearResults.query.filter_by(year=year, race_name=race_name).first()
+            race_info = {"year": year, "number": counter, "name": race_name}
+            response_race = requests.get(race_url)
+            
+            if not existing_result: 
+                if response_race.status_code == 200:
+                    html_race = response_race.text
+                    race_content = BeautifulSoup(html_race, 'html.parser')
+                    sprint_content = is_sprint_race(sprint_url)
+                    get_results(race_content, sprint_content, race_info)                       
+        initialize_result(year, len(rows))
+        if not existing_result:
+            print(f"Year {year} races data added")
         else:
-            print(f'Error fetching page. Status code: {response.status_code}')
-    db.session.commit()
+            print(f"Year {year} races data updated")
+        db.session.commit()
+        return True
+    else:
+        return False
 
 def is_sprint_race(url):
     response_sprint = requests.get(url)
