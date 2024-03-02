@@ -39,6 +39,3 @@ def error():
     response = make_response(render_template('error.html', error=error))
     response.set_cookie('error', '', expires=0)
     return response
-
-
-

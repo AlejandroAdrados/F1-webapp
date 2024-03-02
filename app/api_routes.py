@@ -38,6 +38,7 @@ def get_races():
     for item in data:
         if item['year'] == int(year):
             return jsonify(item)
+    return throwError(400, 'No se encontraron datos para la temporada seleccionada')
         
 @api.route('/competitor/info', methods=['GET'])
 def get_competitor_score():
@@ -73,67 +74,74 @@ def get_competitor_history():
 def get_num_competitors():
     year = request.args.get('year')
     result = db.num_competitors(year)
-    return jsonify(result)
+    if result > 0:
+        return jsonify(result)
+    else:
+        return throwError(400, 'No se encontraron datos para la temporada seleccionada')
 
 @api.route('/competitors/list', methods=['GET'])
 def get_competitors():
     year = request.args.get('year')
     result = db.competitors_list(year)
-    return jsonify(result)
+    if result:
+        return jsonify(result)
+    else:
+        return throwError(400, 'No se encontraron datos para la temporada seleccionada')
 
 @api.route('graph', methods=['GET'])
 def get_graph():
-    year = request.args.get('year')
-    race = int(request.args.get('race'))
-    graph, swaps_list = gr.graph_until_ranking(year, race)
-    weighted_graph, labels = gr.weighted_graph(graph, swaps_list)
-    fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
-    graph_json = fig.to_json()
-    return graph_json
-
-@api.route('bgraph', methods=['GET'])
-def get_bonus_graph():
-    year = request.args.get('year')
-    race = int(request.args.get('race'))
-    graph, swaps_list = gr.graph_until_ranking(year, race)
-    bonuses = {1: 4, 2: 3, 3: 2}
-    weighted_graph, labels = gr.weighted_graph(graph, swaps_list, bonuses)
-    fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
-    graph_json = fig.to_json()
-    return graph_json
+    try:
+        year = request.args.get('year')
+        race = int(request.args.get('race'))
+        bonus = request.args.get('bonus')
+        graph, swaps_list = gr.graph_until_ranking(year, race)
+        if bonus == 'true':
+            bonuses = {1: 4, 2: 3, 3: 2}
+            weighted_graph, labels = gr.weighted_graph(graph, swaps_list, bonuses)
+        elif bonus == 'false':
+            weighted_graph, labels = gr.weighted_graph(graph, swaps_list)
+        else:
+            return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
+        fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
+        graph_json = fig.to_json()
+        return graph_json
+    except:
+        return throwError(500, 'Error al generar el último grafo seleccionado.')
 
 @api.route('metrics/ranking', methods=['GET'])
 def get_ranking_metrics():
-    year = request.args.get('year')
-    race = int(request.args.get('race'))
-    graph, swaps_list = gr.graph_until_ranking(year, race)
-    weighted_graph = gr.weighted_graph(graph, swaps_list)[0]
-    result = mt.weighted_graph_metrics(weighted_graph, race)
-    return jsonify(result)
-
-@api.route('metrics/branking', methods=['GET'])
-def get_ranking_bonus_metrics():
-    year = request.args.get('year')
-    race = int(request.args.get('race'))
-    graph, swaps_list = gr.graph_until_ranking(year, race)
-    bonuses = {1: 4, 2: 3, 3: 2}
-    weighted_graph = gr.weighted_graph(graph, swaps_list, bonuses)[0]
-    result = mt.weighted_graph_metrics(weighted_graph, race)
-    return jsonify(result)
+    try:   
+        year = request.args.get('year')
+        race = int(request.args.get('race'))
+        bonus = request.args.get('bonus')
+        graph, swaps_list = gr.graph_until_ranking(year, race)
+        if bonus == 'true':
+            bonuses = {1: 4, 2: 3, 3: 2}
+            weighted_graph = gr.weighted_graph(graph, swaps_list, bonuses)[0]
+        elif bonus == 'false':
+            weighted_graph = gr.weighted_graph(graph, swaps_list)[0]
+        else:
+            return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
+        result = mt.weighted_graph_metrics(weighted_graph, race)
+        return jsonify(result)
+    except:
+        return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
 
 @api.route('metrics/season', methods=['GET'])
 def get_season_metrics():
-    year = request.args.get('year')
-    race = int(request.args.get('race'))
-    result = mt.season_metrics(year, race, False)
-    return jsonify(result)
-
-@api.route('metrics/bseason', methods=['GET'])
-def get_season_bonus_metrics():
-    year = request.args.get('year')
-    race = int(request.args.get('race'))
-    result = mt.season_metrics(year, race, True)
-    return jsonify(result)
+    try:
+        year = request.args.get('year')
+        race = int(request.args.get('race'))
+        bonus = request.args.get('bonus')
+        if bonus == 'true':
+            result = mt.season_metrics(year, race, True)
+        elif bonus == 'false':
+            result = mt.season_metrics(year, race, False)
+        else:
+            return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
+        return jsonify(result)
+    except:
+        return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
 
 def throwError(code,message):
     response = make_response(jsonify({'error': message}), code)

@@ -4,12 +4,8 @@ let graphsArray = [];
 function loadNewGraph(year, race, isBonus) {
     $('#loading-spinner').show();
     $('#loadAnotherGraph').hide();
-    let url = `/api/bgraph?year=${year}&race=${race}`;
-    if (!isBonus) {
-        url = `/api/graph?year=${year}&race=${race}`;
-    }
     $.ajax({
-        url: url,
+        url: `/api/graph?year=${year}&race=${race}&bonus=${isBonus}`,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -17,12 +13,8 @@ function loadNewGraph(year, race, isBonus) {
             $('#loadAnotherGraph').show();
             graphsArray.push([year, race, isBonus])
             refreshList();
-            const title = $('<h4>')
-                .text(`Grafo temporada ${year} jornada ${race}`)
-                .css({ // Tamaño de fuente más pequeño
-                    textAlign: 'center' // Centrado horizontal
-                })
-                .appendTo('#graph');
+            $('<h4>').text(`Grafo temporada ${year} jornada ${race} 
+            ${isBonus ? 'bonificado' : 'no bonificado'}`).appendTo('#graph');
             const graphDiv = $('<div>').addClass('graph').appendTo('#graph');
             const graphId = `graph_${graphData.length + 1}`;
             $('<div>').attr('id', graphId).appendTo(graphDiv);
@@ -123,6 +115,7 @@ $(document).ready(function() {
         e.preventDefault();
         const yearSel = $('#yearSelectorModal');
         loadYearsForSelector(yearSel);
+        $('#bonificationCheckbox').prop('checked', false);
         $('#graphModal').modal('show');
     });
 

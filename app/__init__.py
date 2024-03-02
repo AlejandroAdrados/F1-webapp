@@ -23,7 +23,8 @@ def create_app():
     @app.errorhandler(404)
     def page_not_found(error):
         custom_error = {"code": error.code, "description": "Not Found",
-                         "message": "La URL solicitada no se encontró en el servidor. Si ingresaste la URL manualmente, por favor verifica la ortografía e intenta nuevamente."}
+                        "message": """La URL solicitada no se encontró en el servidor.
+                        Si ingresaste la URL manualmente, por favor verifica la ortografía e intenta nuevamente."""}
         return render_template('error.html', error=custom_error), 404
 
     with app.app_context():

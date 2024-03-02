@@ -7,12 +7,8 @@ function setProgressLevel(metricId, value) {
     }
 
 function getData() {
-    let url = `/api/metrics/branking?year=${year}&race=${race}`;
-    if (isBonus === 'false') {
-        url = `/api/metrics/ranking?year=${year}&race=${race}`;
-    }
     $.ajax({
-        url: url,
+        url: `/api/metrics/ranking?year=${year}&race=${race}&bonus=${isBonus}`,
         type: 'GET',
         success: function(data) {
             $('#clustering-coefficient').append(parseFloat(data["Coeficiente de Clustering"]).toFixed(6));
@@ -26,8 +22,8 @@ function getData() {
             setProgressLevel('kendall', data['Kendall']);
             setProgressLevel('evolutionary-kendall', data['Kendall Evolutivo']);
         },
-        error: function(error) {
-          console.error('Error fetching data:', error);
+        error: function() {
+            window.location.href = '/error';
         }
     });
 }

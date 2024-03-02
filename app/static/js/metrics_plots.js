@@ -3,11 +3,7 @@ let graphsArray = [];
 function loadNewPlot(year, race, isBonus) {
     $('#loading-spinner').show();
     $('#loadAnotherPlot').hide();
-    let url = `/api/metrics/bseason?year=${year}&race=${race}`;
-    if (!isBonus) {
-        url = `/api/metrics/season?year=${year}&race=${race}`;
-    }
-    $.get(url, function(data) {
+    $.get(`/api/metrics/season?year=${year}&race=${race}&bonus=${isBonus}`, function(data) {
         $('#loading-spinner').hide();
         $('#loadAnotherPlot').show();
         graphsArray.push([year, race, isBonus])
@@ -150,6 +146,7 @@ $(document).ready(function() {
             e.preventDefault();
             const yearSel = $('#yearSelectorPlotsModal');
             loadYearsForSelector(yearSel);
+            $('#bonificationCheckbox').prop('checked', false);
             $('#metricsModalPlots').modal('show');
     });
     

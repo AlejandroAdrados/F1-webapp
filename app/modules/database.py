@@ -78,7 +78,11 @@ def competitors_list(year):
 
 # Función que devuelve el número de pilotos de un año
 def num_competitors(year):
-    return len(competitors_list(year))
+    competitors = competitors_list(year)
+    if competitors:
+        return len(competitors)
+    else:
+        return 0
 
 # Función que devuelve los pilotos por encima de un piloto en una ranking
 def competitors_below(driver_name, year, ranking):
