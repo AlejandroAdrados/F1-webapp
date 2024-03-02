@@ -2,7 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const year = urlParams.get('year');
 const race = urlParams.get('race');
 
-$(document).ready(function() {
+$(document).ready(function () {
   const infoContainer = document.getElementById('yearRaceInfo');
   if (race !== null && year !== null) {
     infoContainer.innerText = `Temporada ${year} - Jornada ${race}`;
@@ -18,7 +18,7 @@ function updateYearToOptions() {
   if (yearFrom === 'Selecciona un año' || yearFrom === '') {
     yearToSelect.innerHTML = '<option value="">Selecciona una opción</option>';
   }
-  else{
+  else {
     for (let year = yearFrom; year <= 2023; year++) {
       yearToSelect.innerHTML += `<option value="${year}">${year}</option>`;
     }
@@ -46,7 +46,7 @@ function showModal() {
 
 function getResultsFromFile() {
   $('#fileInput').click();
-  $('#fileInput').change(function() {
+  $('#fileInput').change(function () {
     const file = $(this).prop('files')[0];
     if (file) {
       // Implementar lógica para manejar el archivo seleccionado
@@ -65,33 +65,33 @@ async function getResultsFromInternet() {
   const totalYears = yearEnd - yearStart + 1;
   let processedYears = 0;
   for (let year = yearStart; year <= yearEnd; year++) {
-      const data = { year: year };
-      $('#modal-text').show();
-      document.getElementById('modal-text').innerText = 'Importando temporada ' + year + '...';
-      try {
-          const response = await fetch('/api/results', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(data)
-          });
-          if (!response.ok) {
-              throw new Error('Error en la respuesta de la API');
-          }
-          processedYears++;
-          const progressPercentage = Math.round((processedYears / totalYears) * 100);
-          updateProgressBar(progressPercentage);
-          if (processedYears === totalYears) {
-              alert('Resultados correctamente importados desde Internet');
-              $('#modal-text').hide();
-              window.location.reload();
-          }
-      } catch (error) {
-          alert('Error al procesar el año ' + year + ' : ' + error);
-          $('#apiOption, #importarArchivo').show();
-          $('.modal-body p').show();
-          $('.progress').hide();
-          break;
+    const data = { year: year };
+    $('#modal-text').show();
+    document.getElementById('modal-text').innerText = 'Importando temporada ' + year + '...';
+    try {
+      const response = await fetch('/api/results', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+        throw new Error('Error en la respuesta de la API');
       }
+      processedYears++;
+      const progressPercentage = Math.round((processedYears / totalYears) * 100);
+      updateProgressBar(progressPercentage);
+      if (processedYears === totalYears) {
+        alert('Resultados correctamente importados desde Internet');
+        $('#modal-text').hide();
+        window.location.reload();
+      }
+    } catch (error) {
+      alert('Error al procesar el año ' + year + ' : ' + error);
+      $('#apiOption, #importarArchivo').show();
+      $('.modal-body p').show();
+      $('.progress').hide();
+      break;
+    }
   }
 }
 

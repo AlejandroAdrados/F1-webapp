@@ -2,7 +2,8 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 import os
 
-db = SQLAlchemy() 
+db = SQLAlchemy()
+
 
 def create_app():
     basedir = os.path.abspath(os.path.dirname(__file__))
@@ -10,7 +11,8 @@ def create_app():
 
     app = Flask(__name__)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(rootdir, 'data', 'f1_results.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+        os.path.join(rootdir, 'data', 'f1_results.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)

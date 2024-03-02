@@ -3,7 +3,7 @@ let graphsArray = [];
 function loadNewPlot(year, race, isBonus) {
     $('#loading-spinner').show();
     $('#loadAnotherPlot').hide();
-    $.get(`/api/metrics/season?year=${year}&race=${race}&bonus=${isBonus}`, function(data) {
+    $.get(`/api/metrics/season?year=${year}&race=${race}&bonus=${isBonus}`, function (data) {
         $('#loading-spinner').hide();
         $('#loadAnotherPlot').show();
         graphsArray.push([year, race, isBonus])
@@ -62,7 +62,7 @@ function loadNewPlot(year, race, isBonus) {
                     }
                 };
                 Plotly.newPlot(div.id, data, layout);
-                window.addEventListener('resize', function() {
+                window.addEventListener('resize', function () {
                     Plotly.relayout(divId, {
                         width: $(`#${divId}`).width(),
                         height: $(`#${divId}`).height()
@@ -77,11 +77,11 @@ function loadNewPlot(year, race, isBonus) {
 function deleteTrace(index) {
     const containers = document.querySelectorAll('.js-plotly-plot');
     containers.forEach(container => {
-    const fullData = container._fullData;
-    if (fullData && fullData.length > index) {
-        Plotly.deleteTraces(container.id, index);
-    }
-});
+        const fullData = container._fullData;
+        if (fullData && fullData.length > index) {
+            Plotly.deleteTraces(container.id, index);
+        }
+    });
 }
 
 function refreshList() {
@@ -97,7 +97,7 @@ function refreshList() {
         deleteButton.classList.add('delete-button');
         deleteButton.innerHTML = '&#10006;'; // Carácter unicode para la cruz
         deleteButton.href = '#';
-        deleteButton.onclick = function() {
+        deleteButton.onclick = function () {
             const index = $(this).parent().index();
             deleteTrace(index);
             graphsArray.splice(index, 1);
@@ -111,9 +111,9 @@ function refreshList() {
 
 // Modal functions
 function loadYearsForSelector(selector) {
-    $.get('/api/years', function(data) {
+    $.get('/api/years', function (data) {
         selector.empty();
-        var years = data.map(function(item) {
+        var years = data.map(function (item) {
             return item.year;
         });
         var defaultYear = years[0]
@@ -128,7 +128,7 @@ function loadYearsForSelector(selector) {
 }
 
 function loadRacesForSelector(selectedYear, selector) {
-    $.get(`/api/races?year=${selectedYear}`, function(data) {
+    $.get(`/api/races?year=${selectedYear}`, function (data) {
         selector.empty();
         var races = data.races;
         selector.empty();
@@ -141,22 +141,22 @@ function loadRacesForSelector(selectedYear, selector) {
     });
 }
 
-$(document).ready(function() {
-    $('#loadAnotherPlot').click(function(e) {
-            e.preventDefault();
-            const yearSel = $('#yearSelectorPlotsModal');
-            loadYearsForSelector(yearSel);
-            $('#bonificationCheckbox').prop('checked', false);
-            $('#metricsModalPlots').modal('show');
+$(document).ready(function () {
+    $('#loadAnotherPlot').click(function (e) {
+        e.preventDefault();
+        const yearSel = $('#yearSelectorPlotsModal');
+        loadYearsForSelector(yearSel);
+        $('#bonificationCheckbox').prop('checked', false);
+        $('#metricsModalPlots').modal('show');
     });
-    
-    $('#yearSelectorPlotsModal').change(function() {
+
+    $('#yearSelectorPlotsModal').change(function () {
         var selectedYear = $(this).val();
         const raceSel = $('#racesSelectorPlotsModal');
         loadRacesForSelector(selectedYear, raceSel);
     });
 
-    $('#metricsPlotsSelectionForm').submit(function(e) {
+    $('#metricsPlotsSelectionForm').submit(function (e) {
         e.preventDefault();
         const race = $('#racesSelectorPlotsModal').val();
         const year = $('#yearSelectorPlotsModal').val();

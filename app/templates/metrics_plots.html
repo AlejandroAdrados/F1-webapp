@@ -1,48 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div id="headerContainer" style="display: flex; align-items: baseline;">
-        <h1 id="pageTitle">Evolución de métricas de competitividad &nbsp;</h1>
-        <div id="loading-spinner" class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+<div id="headerContainer" style="display: flex; align-items: baseline;">
+    <h1 id="pageTitle">Evolución de métricas de competitividad &nbsp;</h1>
+    <div id="loading-spinner" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
     </div>
-    <div id="graficos"></div>
+</div>
+<div id="graficos"></div>
 {% endblock %}
 
 {% block page_scripts %}
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="../static/js/metrics_plots.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="../static/js/metrics_plots.js"></script>
 {% endblock %}
 
 {% block page_modals %}
-    <div class="modal fade" id="metricsModalPlots" tabindex="-1" aria-labelledby="seleccionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="seleccionModalLabel">Seleccionar Jornada y Año</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="metricsPlotsSelectionForm">
-                        <div class="mb-3">
-                            <label for="year" class="form-label">Año</label>
-                            <select class="form-select" id="yearSelectorPlotsModal" name="year">
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="races" class="form-label">Jornada</label>
-                            <select class="form-select" id="racesSelectorPlotsModal" name="races">
-                            </select>
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="bonificationCheckbox" name="bonification">
-                            <label class="form-check-label" for="bonificationCheckboxPlotsModal">Grafo bonificado por posiciones de podio</label>
-                        </div>
-                        <button type="submit" class="btn btn-secondary">Enviar</button>
-                    </form>
-                </div>
+<div class="modal fade" id="metricsModalPlots" tabindex="-1" aria-labelledby="seleccionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seleccionModalLabel">Seleccionar Jornada y Año</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="metricsPlotsSelectionForm">
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Año</label>
+                        <select class="form-select" id="yearSelectorPlotsModal" name="year">
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="races" class="form-label">Jornada</label>
+                        <select class="form-select" id="racesSelectorPlotsModal" name="races">
+                        </select>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="bonificationCheckbox" name="bonification">
+                        <label class="form-check-label" for="bonificationCheckboxPlotsModal">Grafo bonificado por
+                            posiciones de podio</label>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Enviar</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

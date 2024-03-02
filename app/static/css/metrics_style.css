@@ -2,16 +2,19 @@
     font-size: 1.2em;
     color: #777;
     cursor: pointer;
-    transition: color 0.3s
+    transition: color 0.3s;
 }
+
 .info-icon:hover {
     color: black;
 }
+
 .progress-bar-container {
     display: flex;
     align-items: center;
     height: 30px;
 }
+
 .progress-bar {
     position: absolute;
     right: 0;
@@ -22,6 +25,7 @@
     overflow: hidden;
     margin-right: 10px;
 }
+
 .progress-level {
     height: 100%;
     border-radius: 5px;
@@ -29,6 +33,7 @@
     transition: width 3s ease;
     width: 0%;
 }
+
 .info-content {
     display: none;
     position: absolute;

@@ -1,63 +1,63 @@
 .main {
-    padding: 20px;
-    padding-top: 50px;
+  padding: 20px;
+  padding-top: 50px;
 }
 
 .sidebar {
-    padding-top: 50px;
-    background-color: #f8f9fa; /* Color de fondo gris claro para la barra lateral */
-    border-right: 1px solid #dee2e6; /* Borde derecho para separar del contenido principal */
-    min-height: 100vh; /* Altura completa de la barra lateral */
+  padding-top: 50px;
+  background-color: #f8f9fa; /* Color de fondo gris claro para la barra lateral */
+  border-right: 1px solid #dee2e6; /* Borde derecho para separar del contenido principal */
+  min-height: 100vh; /* Altura completa de la barra lateral */
 }
 
 .sidebar-heading {
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 1rem;
-    text-transform: uppercase;
-    background-color: #e9ecef; /* Color de fondo gris claro para el encabezado de la barra lateral */
-    border-bottom: 1px solid #dee2e6; /* Borde inferior para el encabezado de la barra lateral */
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem;
+  text-transform: uppercase;
+  background-color: #e9ecef; /* Color de fondo gris claro para el encabezado de la barra lateral */
+  border-bottom: 1px solid #dee2e6; /* Borde inferior para el encabezado de la barra lateral */
 }
 
 .list-group-item {
-    padding: 0; /* Ajusta el padding para que los botones no tengan espacio adicional */
+  padding: 0; /* Ajusta el padding para que los botones no tengan espacio adicional */
 }
 
 .list-group-item a {
-    text-decoration: none; /* Elimina el subrayado del texto */
+  text-decoration: none; /* Elimina el subrayado del texto */
 }
 
 .list-group-item a:hover {
-    text-decoration: none; /* Evita que el subrayado aparezca al pasar el mouse */
+  text-decoration: none; /* Evita que el subrayado aparezca al pasar el mouse */
 }
 
 #pageTitle {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .info-box {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 .info-title {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #555;
-    margin-bottom: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 10px;
 }
 .info-value {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #333;
-    display: block;
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #333;
+  display: block;
 }
 .info-text {
-    font-size: 2em;
-    font-weight: bold;
-    color: #333;
-    display: block;
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+  display: block;
 }

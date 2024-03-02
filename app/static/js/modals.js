@@ -14,14 +14,14 @@ $(document).ready(function () {
         window.location.href = `/clasification?year=${year}&race=${race}`;
     });
 });
-$('#yearSelector').change(function() {
+$('#yearSelector').change(function () {
     var selectedYear = $(this).val();
     const yearSelector = $('#racesSelector');
     loadRacesForSelector(selectedYear, yearSelector);
 });
 
 // Lógica información de un piloto
-$(document).ready(function() {
+$(document).ready(function () {
     $('#competitorLink').click(function (e) {
         e.preventDefault();
         const driverSelector = $('#yearSelectorDriver')
@@ -37,7 +37,7 @@ $(document).ready(function() {
         window.location.href = `/competitor?year=${year}&race=${race}&driver=${driver}`;
     });
 });
-$('#yearSelectorDriver').change(function() {
+$('#yearSelectorDriver').change(function () {
     var selectedYear = $(this).val();
     const raceSelector = $('#racesSelectorDriver');
     loadRacesForSelector(selectedYear, raceSelector);
@@ -45,7 +45,7 @@ $('#yearSelectorDriver').change(function() {
 });
 
 // Lógica resumen de métricas
-$(document).ready(function() {
+$(document).ready(function () {
     $('#metricsLink').click(function (e) {
         e.preventDefault();
         const metricsSelector = $('#yearSelectorMetricsModal')
@@ -61,7 +61,7 @@ $(document).ready(function() {
         window.location.href = `/metrics?year=${year}&race=${race}&bonus=${isBonus}`;
     });
 });
-$('#yearSelectorMetricsModal').change(function() {
+$('#yearSelectorMetricsModal').change(function () {
     var selectedYear = $(this).val();
     const raceSelector = $('#racesSelectorMetricsModal');
     loadRacesForSelector(selectedYear, raceSelector);
@@ -69,8 +69,8 @@ $('#yearSelectorMetricsModal').change(function() {
 
 // Funciones para rellenar selectores
 function loadYearsForSelector(selector) {
-    $.get('/api/years', function(data) {
-        var years = data.map(function(item) {
+    $.get('/api/years', function (data) {
+        var years = data.map(function (item) {
             return item.year;
         });
         var defaultYear = years[0]
@@ -85,7 +85,7 @@ function loadYearsForSelector(selector) {
 }
 
 function loadRacesForSelector(selectedYear, selector) {
-    $.get(`/api/races?year=${selectedYear}`, function(data) {
+    $.get(`/api/races?year=${selectedYear}`, function (data) {
         var races = data.races;
         selector.empty();
         for (var i = 1; i <= races; i++) {
@@ -98,9 +98,9 @@ function loadRacesForSelector(selectedYear, selector) {
 }
 
 function loadDriversForSelector(selectedYear) {
-    $.get(`/api/competitors/list?year=${selectedYear}`, function(data) {
-        $('#driverSelector').empty(); 
-        data.forEach(function(driver) {
+    $.get(`/api/competitors/list?year=${selectedYear}`, function (data) {
+        $('#driverSelector').empty();
+        data.forEach(function (driver) {
             $('#driverSelector').append($('<option>', {
                 value: driver,
                 text: driver

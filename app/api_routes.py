@@ -7,16 +7,18 @@ from app.modules import metrics as mt
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
+
 @api.route('/results', methods=['GET'])
 def get_results():
-        year = request.args.get('year')
-        race = request.args.get('race')
-        max_races = int(db.get_races(year))
-        if year and int(race) <= max_races:
-            results = db.total_ranking(year, race)
-            if results:
-                return jsonify(results)
-        return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
+    year = request.args.get('year')
+    race = request.args.get('race')
+    max_races = int(db.get_races(year))
+    if year and int(race) <= max_races:
+        results = db.total_ranking(year, race)
+        if results:
+            return jsonify(results)
+    return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
+
 
 @api.route('/results', methods=['POST'])
 def update_results():
@@ -26,10 +28,12 @@ def update_results():
     else:
         return throwError(500, 'Error al actualizar los datos de la temporada seleccionada')
 
+
 @api.route('/years', methods=['GET'])
 def get_years():
     results = db.get_info()
     return jsonify(results)
+
 
 @api.route('/races', methods=['GET'])
 def get_races():
@@ -39,7 +43,8 @@ def get_races():
         if item['year'] == int(year):
             return jsonify(item)
     return throwError(400, 'No se encontraron datos para la temporada seleccionada')
-        
+
+
 @api.route('/competitor/info', methods=['GET'])
 def get_competitor_score():
     year = request.args.get('year')
@@ -70,6 +75,7 @@ def get_competitor_history():
     else:
         return throwError(400, 'No se encontraron datos del piloto seleccionado')
 
+
 @api.route('/competitors/num', methods=['GET'])
 def get_num_competitors():
     year = request.args.get('year')
@@ -78,6 +84,7 @@ def get_num_competitors():
         return jsonify(result)
     else:
         return throwError(400, 'No se encontraron datos para la temporada seleccionada')
+
 
 @api.route('/competitors/list', methods=['GET'])
 def get_competitors():
@@ -88,6 +95,7 @@ def get_competitors():
     else:
         return throwError(400, 'No se encontraron datos para la temporada seleccionada')
 
+
 @api.route('graph', methods=['GET'])
 def get_graph():
     try:
@@ -97,7 +105,8 @@ def get_graph():
         graph, swaps_list = gr.graph_until_ranking(year, race)
         if bonus == 'true':
             bonuses = {1: 4, 2: 3, 3: 2}
-            weighted_graph, labels = gr.weighted_graph(graph, swaps_list, bonuses)
+            weighted_graph, labels = gr.weighted_graph(
+                graph, swaps_list, bonuses)
         elif bonus == 'false':
             weighted_graph, labels = gr.weighted_graph(graph, swaps_list)
         else:
@@ -108,9 +117,10 @@ def get_graph():
     except:
         return throwError(500, 'Error al generar el último grafo seleccionado.')
 
+
 @api.route('metrics/ranking', methods=['GET'])
 def get_ranking_metrics():
-    try:   
+    try:
         year = request.args.get('year')
         race = int(request.args.get('race'))
         bonus = request.args.get('bonus')
@@ -126,6 +136,7 @@ def get_ranking_metrics():
         return jsonify(result)
     except:
         return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
+
 
 @api.route('metrics/season', methods=['GET'])
 def get_season_metrics():
@@ -143,7 +154,8 @@ def get_season_metrics():
     except:
         return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
 
-def throwError(code,message):
+
+def throwError(code, message):
     response = make_response(jsonify({'error': message}), code)
     error = {'code': code, 'description': "", 'message': message}
     response.set_cookie('error', json.dumps(error))

@@ -1,16 +1,16 @@
 const isBonus = urlParams.get('bonus');
 
 function setProgressLevel(metricId, value) {
-        const progressBar = document.getElementById(`${metricId}-level`);
-        const normalizedValue = Math.min(Math.max(value, 0), 1);
-        progressBar.style.width = `${normalizedValue * 100}%`;
-    }
+    const progressBar = document.getElementById(`${metricId}-level`);
+    const normalizedValue = Math.min(Math.max(value, 0), 1);
+    progressBar.style.width = `${normalizedValue * 100}%`;
+}
 
 function getData() {
     $.ajax({
         url: `/api/metrics/ranking?year=${year}&race=${race}&bonus=${isBonus}`,
         type: 'GET',
-        success: function(data) {
+        success: function (data) {
             $('#clustering-coefficient').append(parseFloat(data["Coeficiente de Clustering"]).toFixed(6));
             $('#normalized-degree').append(parseFloat(data["Grado Normalizado"]).toFixed(6));
             $('#kendall').append(parseFloat(data["Kendall"]).toFixed(6));
@@ -22,7 +22,7 @@ function getData() {
             setProgressLevel('kendall', data['Kendall']);
             setProgressLevel('evolutionary-kendall', data['Kendall Evolutivo']);
         },
-        error: function() {
+        error: function () {
             window.location.href = '/error';
         }
     });

@@ -1,41 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 id="pageTitle">Clasificación</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Pos</th>
-                <th>Nombre</th>
-                <th>Constructor</th>
-                <th>Puntos</th>
-            </tr>
-        </thead>
-        <tbody id="tablaClasificacion">
-            <!-- Los datos se cargarán dinámicamente aquí -->
-        </tbody>
-    </table>
+<h1 id="pageTitle">Clasificación</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Pos</th>
+            <th>Nombre</th>
+            <th>Constructor</th>
+            <th>Puntos</th>
+        </tr>
+    </thead>
+    <tbody id="tablaClasificacion">
+        <!-- Los datos se cargarán dinámicamente aquí -->
+    </tbody>
+</table>
 {% endblock %}
 
 {% block page_scripts %}
-    <script>
-        $(document).ready(function() {
-            $.ajax({
+<script>
+    $(document).ready(function () {
+        $.ajax({
             url: `/api/results?year=${year}&race=${race}`,
             method: 'GET',
-            success: function(data) {
+            success: function (data) {
                 var tabla = '';
                 var i = 0;
-                data.forEach(function(item) {
+                data.forEach(function (item) {
                     i++;
                     tabla += '<tr><td>' + i + '</td><td>' + item.driver_name + '</td><td>' + item.team + '</td><td>' + item.total_points + '</td></tr>';
                 });
                 $('#tablaClasificacion').html(tabla);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 window.location.href = '/error';
             }
         });
     });
-    </script>
+</script>
 {% endblock %}

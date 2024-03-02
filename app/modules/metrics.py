@@ -41,7 +41,7 @@ def evolutionary_kendall_correlation(graph, num_rankings):
     num_nodes = graph.number_of_nodes()
     edge_weights = nx.get_edge_attributes(graph, 'weight')
     weight_sum = sum(edge_weights.values())
-    max_possible_weight_sum = math.comb(num_nodes,2) * (num_rankings - 1)
+    max_possible_weight_sum = math.comb(num_nodes, 2) * (num_rankings - 1)
     if max_possible_weight_sum == 0:
         return 0
     coefficient = 1 - (2 * weight_sum) / max_possible_weight_sum
@@ -54,7 +54,8 @@ def weighted_graph_metrics(graph, num_rankings):
     normalized_weight_value = normalized_weight(graph, num_rankings)
     clustering_coefficient_value = clustering_coefficient(graph)
     kendall_coefficient = kendall_correlation(graph)
-    evolutionary_kendall_coefficient = evolutionary_kendall_correlation(graph, num_rankings)
+    evolutionary_kendall_coefficient = evolutionary_kendall_correlation(
+        graph, num_rankings)
 
     stats = {
         'Grado Normalizado': normalized_degree_value,
@@ -88,7 +89,8 @@ def season_metrics(year, ranking, bonus):
         graph, swaps_list = graphs.graph_until_ranking(year, rank+1)
         if bonus:
             bonuses = {1: 4, 2: 3, 3: 2}
-            weighted_graph = graphs.weighted_graph(graph, swaps_list, bonuses)[0]
+            weighted_graph = graphs.weighted_graph(
+                graph, swaps_list, bonuses)[0]
         else:
             weighted_graph = graphs.weighted_graph(graph, swaps_list)[0]
         ranking_metrics = weighted_graph_metrics(weighted_graph, rank+1)

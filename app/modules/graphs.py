@@ -28,7 +28,8 @@ def weighted_graph(G, swaps_list, bonuses={}):
         for j in i:
             # Obtener la bonificación según la posición
             current_position = j[0]
-            bonus = bonuses.get(current_position, 1)  # Si la posición no tiene bonificación especial, se otorga 1 punto
+            # Si la posición no tiene bonificación especial, se otorga 1 punto
+            bonus = bonuses.get(current_position, 1)
             for k in j[2]:
                 # Define la tupla de la dupla de pilotos
                 edge = (j[1], k)
@@ -44,11 +45,13 @@ def weighted_graph(G, swaps_list, bonuses={}):
     # Si se quiere exportar el grafo:
     # nx.write_gml(G, "app/static/graph.gml")
     labels = nx.get_edge_attributes(G, "weight")
-    important_labels = {edge: weight for edge, weight in labels.items() if weight > 1}
+    important_labels = {edge: weight for edge,
+                        weight in labels.items() if weight > 1}
     return G, important_labels
 
+
 def convert_networkx_to_plotly(G, edge_labels):
-    #pos = nx.kamada_kawai_layout(G)
+    # pos = nx.kamada_kawai_layout(G)
     pos = nx.shell_layout(G)
     edge_trace = go.Scatter(
         x=[],
@@ -60,29 +63,30 @@ def convert_networkx_to_plotly(G, edge_labels):
     for edge in G.edges():
         x0, y0 = pos[edge[0]]
         x1, y1 = pos[edge[1]]
-        edge_trace['x'] += (x0, x1, None)  # Usa paréntesis para crear una tupla en lugar de corchetes
+        # Usa paréntesis para crear una tupla en lugar de corchetes
+        edge_trace['x'] += (x0, x1, None)
         edge_trace['y'] += (y0, y1, None)
 
     node_trace = go.Scatter(
-    x=[],
-    y=[],
-    text=[],
-    mode='markers',
-    hoverinfo='text',
-    marker=dict(
-        showscale=True,
-        colorscale='YlGnBu',
-        reversescale=True,
-        color=[],
-        size=10,
-        colorbar=dict(
-            thickness=15,
-            title='Node Connections',
-            xanchor='left',
-            titleside='right'
-        ),
-        line=dict(width=2))
-)
+        x=[],
+        y=[],
+        text=[],
+        mode='markers',
+        hoverinfo='text',
+        marker=dict(
+            showscale=True,
+            colorscale='YlGnBu',
+            reversescale=True,
+            color=[],
+            size=10,
+            colorbar=dict(
+                thickness=15,
+                title='Node Connections',
+                xanchor='left',
+                titleside='right'
+            ),
+            line=dict(width=2))
+    )
 
     node_trace['x'] = []  # Inicializa como lista vacía
     node_trace['y'] = []  # Inicializa como lista vacía
@@ -113,27 +117,25 @@ def convert_networkx_to_plotly(G, edge_labels):
 
     node_trace['mode'] = 'text'
 
-
     node_trace['textfont'] = dict(color='black')
     fig = go.Figure(data=[edge_trace, node_trace],
-                   layout=go.Layout(
-                        plot_bgcolor='white',
-                        showlegend=False,
-                        hovermode='closest',
-                        margin=dict(b=20, l=5, r=5, t=40),
-                        annotations=[dict(
-                            text="",
-                            showarrow=False,
-                            xref="paper", yref="paper",
-                            x=0.005, y=-0.002)],
-                        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, visible=False),
-                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                        height=800  # Establecer la altura del cuadro de la figura
-                    )
-               )
-    
-    
-    
+                    layout=go.Layout(
+        plot_bgcolor='white',
+        showlegend=False,
+        hovermode='closest',
+        margin=dict(b=20, l=5, r=5, t=40),
+        annotations=[dict(
+            text="",
+            showarrow=False,
+            xref="paper", yref="paper",
+            x=0.005, y=-0.002)],
+        xaxis=dict(showgrid=False, zeroline=False,
+                   showticklabels=False, visible=False),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        height=800  # Establecer la altura del cuadro de la figura
+    )
+    )
+
     # Añadir etiquetas personalizadas de las aristas al gráfico
     for edge, label in edge_labels.items():
         x0, y0 = pos[edge[0]]
@@ -150,7 +152,8 @@ def convert_networkx_to_plotly(G, edge_labels):
         fig.add_annotation(
             x=x_mid, y=y_mid,  # Coordenadas del texto
             text=label,  # Texto del label
-            font=dict(size=12, color='black'),  # Ajustar el tamaño y color de la fuente del texto
+            # Ajustar el tamaño y color de la fuente del texto
+            font=dict(size=12, color='black'),
             showarrow=False,  # No mostrar flecha
             xref="x", yref="y",
             bgcolor="white",  # Fondo blanco

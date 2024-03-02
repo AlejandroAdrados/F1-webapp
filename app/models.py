@@ -1,5 +1,6 @@
 from . import db
 
+
 class YearResults(db.Model):
     __tablename__ = 'year_results'
 

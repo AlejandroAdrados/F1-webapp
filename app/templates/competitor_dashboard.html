@@ -1,41 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 id="pageTitle">Informe del piloto</h1>
+<h1 id="pageTitle">Informe del piloto</h1>
 
-    <div class="row">
-        <div class="col-md-6 col-centered">
-            <div id="driver" class="info-box">
-                <h2 class="info-title">Nombre</h2>
-                <p class="info-text" id="driver-text">--</p>
-            </div>
-        </div>
-        <div class="col-md-6 col-centered">
-            <div id="team" class="info-box">
-                <h2 class="info-title">Equipo</h2>
-                <p class="info-text" id="team-text">--</p>
-            </div>
+<div class="row">
+    <div class="col-md-6 col-centered">
+        <div id="driver" class="info-box">
+            <h2 class="info-title">Nombre</h2>
+            <p class="info-text" id="driver-text">--</p>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-6 col-centered">
-            <div id="position" class="info-box">
-                <h2 class="info-title">Posición actual</h2>
-                <p class="info-value" id="position-text">--</p>
-            </div>
-        </div>
-        <div class="col-md-6 col-centered">
-            <div id="score" class="info-box">
-                <h2 class="info-title">Puntos actuales</h2>
-                <p class="info-value" id="score-text">--</p>
-            </div>
+    <div class="col-md-6 col-centered">
+        <div id="team" class="info-box">
+            <h2 class="info-title">Equipo</h2>
+            <p class="info-text" id="team-text">--</p>
         </div>
     </div>
+</div>
 
-    <div id="history">
-        <div id="history-chart"></div>
+<div class="row">
+    <div class="col-md-6 col-centered">
+        <div id="position" class="info-box">
+            <h2 class="info-title">Posición actual</h2>
+            <p class="info-value" id="position-text">--</p>
+        </div>
     </div>
+    <div class="col-md-6 col-centered">
+        <div id="score" class="info-box">
+            <h2 class="info-title">Puntos actuales</h2>
+            <p class="info-value" id="score-text">--</p>
+        </div>
+    </div>
+</div>
+
+<div id="history">
+    <div id="history-chart"></div>
+</div>
 {% endblock %}
 
 {% block page_scripts %}

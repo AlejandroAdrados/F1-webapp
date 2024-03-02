@@ -4,13 +4,15 @@ import requests
 from ..models import YearResults
 from .. import db
 
+
 def load_season(year):
     url = f'https://www.formula1.com/en/results.html/{year}/races.html'
     response = requests.get(url)
     if response.status_code == 200:
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
-        rows = soup.find('table', {'class': 'resultsarchive-table'}).find('tbody').find_all('tr')
+        rows = soup.find(
+            'table', {'class': 'resultsarchive-table'}).find('tbody').find_all('tr')
         counter = 0
         for row in rows:
             counter += 1
@@ -18,16 +20,17 @@ def load_season(year):
             race_url = row.find('a')['href']
             race_url = f'https://www.formula1.com{race_url}'
             sprint_url = f'{race_url[:-16]}sprint-results.html'
-            existing_result = YearResults.query.filter_by(year=year, race_name=race_name).first()
+            existing_result = YearResults.query.filter_by(
+                year=year, race_name=race_name).first()
             race_info = {"year": year, "number": counter, "name": race_name}
             response_race = requests.get(race_url)
-            
-            if not existing_result: 
+
+            if not existing_result:
                 if response_race.status_code == 200:
                     html_race = response_race.text
                     race_content = BeautifulSoup(html_race, 'html.parser')
                     sprint_content = is_sprint_race(sprint_url)
-                    get_results(race_content, sprint_content, race_info)                       
+                    get_results(race_content, sprint_content, race_info)
         initialize_result(year, len(rows))
         if not existing_result:
             print(f"Year {year} races data added")
@@ -37,6 +40,7 @@ def load_season(year):
         return True
     else:
         return False
+
 
 def is_sprint_race(url):
     response_sprint = requests.get(url)
@@ -51,10 +55,13 @@ def is_sprint_race(url):
                     return soup_sprint
     return None
 
+
 def add_sprint_points(driver, race, points):
-    result = YearResults.query.filter_by(driver_name=driver, race_name=race).first()
+    result = YearResults.query.filter_by(
+        driver_name=driver, race_name=race).first()
     if result:
         result.points += points
+
 
 def initialize_result(year, ranking):
     results = (
@@ -65,8 +72,10 @@ def initialize_result(year, ranking):
     )
     race_info = {"year": year, "number": 0, "name": " "}
     for driver, team in results:
-        driver_info = {"position": 1, "name": driver, "team": team, "points": 0}
+        driver_info = {"position": 1, "name": driver,
+                       "team": team, "points": 0}
         return add_result(race_info, driver_info, 0)
+
 
 def get_results(race_content, sprint_content, race_info):
     table_race = race_content.find('table', {'class': 'resultsarchive-table'})
@@ -76,7 +85,8 @@ def get_results(race_content, sprint_content, race_info):
             driver_info = extract_info_from_row(race_row)
             points = float(driver_info.get("points"))
             if sprint_content:
-                sprint_table = sprint_content.find('table', {'class': 'resultsarchive-table'})
+                sprint_table = sprint_content.find(
+                    'table', {'class': 'resultsarchive-table'})
                 if sprint_table:
                     sprint_rows = sprint_table.find('tbody').find_all('tr')
                     for row_sprint in sprint_rows:
@@ -86,14 +96,16 @@ def get_results(race_content, sprint_content, race_info):
                             break
             add_result(race_info, driver_info, points)
 
+
 def extract_info_from_row(row):
     cells = row.find_all('td')
     position = cells[1].text.strip()
     driver_name = cells[3].text.strip().replace('\n', ' ')[:-4]
     driver_name = fix_text(driver_name)
     team = cells[4].text.strip()
-    points = cells[7].text.strip()                        
+    points = cells[7].text.strip()
     return {"position": position, "name": driver_name, "team": team, "points": points}
+
 
 def add_result(race_info, driver_info, points):
     new_result = YearResults(
