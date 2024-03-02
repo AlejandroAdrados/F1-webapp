@@ -34,14 +34,47 @@
 # Requisitos Técnicos
 
 - Python 3.7 o superior.
-- Bibliotecas: 
 
 # Guía de Configuración
 
-1. Clona el repositorio: `git clone https://github.com/AlejandroAdrados/F1-webapp`
-2. Navega al directorio del proyecto: `cd F1-webapp`
-3. Instala las dependencias: `pip install -r requirements.txt`
-4. Ejecuta la aplicación: `python3 run.py`
-5. Accede a la página en tu navegador: `http://localhost:8050`
+Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
+
+1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
+
+```bash
+git clone https://github.com/AlejandroAdrados/F1-webapp
+```
+
+2. Navega al directorio del proyecto recién clonado con el siguiente comando:
+
+```bash
+cd F1-webapp
+```
+
+3. Crea un entorno virtual para este proyecto y actívalo. Esto te ayudará a mantener las dependencias del proyecto aisladas de otros proyectos y del sistema global de Python. Usa los siguientes comandos:
+
+```bash
+python3 -m venv venv         # Crear un entorno virtual llamado 'venv'
+source venv/bin/activate     # Activar el entorno virtual en macOS/Linux
+.\venv\Scripts\activate      # Activar el entorno virtual en Windows (PowerShell)
+```
+
+4. Instala las dependencias del proyecto utilizando el siguiente comando:
+
+```bash
+pip install -r requirements.txt
+```
+
+5. Ahora puedes ejecutar la aplicación con el siguiente comando:
+
+```bash
+python3 run.py
+```
+
+6. Abre tu navegador web y accede a la página utilizando la siguiente URL:
+
+```
+http://localhost:8050
+```
 
 ¡Disfruta explorando los fascinantes datos de la Fórmula 1!
