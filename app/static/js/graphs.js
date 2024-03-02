@@ -36,10 +36,9 @@ function loadNewGraph(year, race, isBonus) {
                 $("#loadAnotherGraph").show();
             }
         },
-        error: function (xhr, status, error) {
-            console.error("Error fetching graph data:", error);
+        error: function () {
             $("#loading-spinner").hide();
-            $("#graph").text("Error loading graph data");
+            $("#graph").text("Error al cargar el grafo. Pruebe actualizando su base de datos.");
         },
     });
 }

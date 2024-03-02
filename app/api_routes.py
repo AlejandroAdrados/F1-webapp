@@ -114,9 +114,10 @@ def get_graph():
         fig = gr.convert_networkx_to_plotly(weighted_graph, labels)
         graph_json = fig.to_json()
         return graph_json
-    except:
-        return throwError(500, 'Error al generar el último grafo seleccionado.')
-
+    except Exception as error:
+        print(error)
+        return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
+    
 
 @api.route('metrics/ranking', methods=['GET'])
 def get_ranking_metrics():
@@ -134,7 +135,8 @@ def get_ranking_metrics():
             return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
         result = mt.weighted_graph_metrics(weighted_graph, race)
         return jsonify(result)
-    except:
+    except Exception as error:
+        print(error)
         return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
 
 
@@ -151,7 +153,8 @@ def get_season_metrics():
         else:
             return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
         return jsonify(result)
-    except:
+    except Exception as error:
+        print(error)
         return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
 
 
