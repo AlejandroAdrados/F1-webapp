@@ -3,6 +3,20 @@
     "build": {
         "context": "..",
         "dockerfile": "./../Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.autopep8",
+                "ms-azuretools.vscode-docker",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "ms-python.vscode-pylance",
+                "ms-python.pylint",
+                "ms-python.python",
+                "ms-python.debugpy"
+            ]
+        }
     }
 
     // Características adicionales a añadir al contenedor de desarrollo. Más información: https://containers.dev/features.
