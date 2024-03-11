@@ -1,0 +1,22 @@
+{   
+    "name": "F1-webapp",
+    "build": {
+        "context": "..",
+        "dockerfile": "./../Dockerfile"
+    }
+
+    // Características adicionales a añadir al contenedor de desarrollo. Más información: https://containers.dev/features.
+    // "features": {},
+
+    // Utiliza 'forwardPorts' para hacer una lista de puertos dentro del contenedor disponibles localmente.
+    // "forwardPorts": [],
+
+    // Descomenta la siguiente línea para ejecutar comandos después de que se cree el contenedor.
+    // "postCreateCommand": "cat /etc/os-release",
+
+    // Configura propiedades específicas de la herramienta.
+     // "customizations": {},
+
+    // Descomenta para conectarte como un usuario existente que no sea el predeterminado del contenedor. Más información: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "devcontainer"
+}
