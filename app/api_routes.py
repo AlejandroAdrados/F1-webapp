@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request, make_response
 import json
+import os
 from app.modules import web_data as wd
+from app.modules import local_data as ld
 from app.modules import database as db
 from app.modules import graphs as gr
 from app.modules import metrics as mt
@@ -20,13 +22,35 @@ def get_results():
     return throwError(400, 'No se encontraron datos para la temporada y carrera seleccionadas')
 
 
-@api.route('/results', methods=['POST'])
-def update_results():
+@api.route('/results/internet', methods=['POST'])
+def update_results_from_internet():
     year = request.get_json().get('year')
     if wd.load_season(year):
         return jsonify({'message': 'Data updated successfully from the web'})
     else:
         return throwError(500, 'Error al actualizar los datos de la temporada seleccionada')
+    
+@api.route('/results/file', methods=['POST'])
+def update_results_from_file():
+    if 'file' not in request.files:
+        return 'No se ha enviado ningún archivo', 400
+    file = request.files['file']
+    if file.filename == '':
+        return 'No se ha seleccionado ningún archivo', 400
+    if not file.filename.lower().endswith('.db'):
+        return 'El archivo debe tener la extensión .db', 400
+    
+    file_path = os.path.join('/tmp', file.filename)
+    file.save(file_path)
+
+    if ld.verify_db(file_path):
+        try:
+            seasons = ld.get_seasons(file_path)
+            ld.update_db(file_path)
+            return jsonify(seasons)
+        except Exception as error:
+            return throwError(500, 'Error al actualizar los datos de la temporada seleccionada')
+    return throwError(403, 'El archivo no contiene la estructura de datos esperada')
 
 
 @api.route('/years', methods=['GET'])

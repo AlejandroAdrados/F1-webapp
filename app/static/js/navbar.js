@@ -49,11 +49,26 @@ function getResultsFromFile() {
   $('#fileInput').change(function () {
     const file = $(this).prop('files')[0];
     if (file) {
-      // Implementar lógica para manejar el archivo seleccionado
-      alert('Archivo seleccionado: ' + file.name);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      $.ajax({
+        url: '/api/results/file',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          alert("Temporadas " + response + " importadas correctamente.");
+        },
+        error: function(xhr, status, error) {
+          alert('Error al cargar el archivo: ' + error);
+        }
+      });
     }
   });
 }
+
 
 async function getResultsFromInternet() {
   // Ocultar los botones y el texto del modal, y mostrar la barra de progreso
@@ -69,7 +84,7 @@ async function getResultsFromInternet() {
     $('#modal-text').show();
     document.getElementById('modal-text').innerText = 'Importando temporada ' + year + '...';
     try {
-      const response = await fetch('/api/results', {
+      const response = await fetch('/api/results/internet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

@@ -160,4 +160,4 @@ cython_debug/
 #.idea/
 
 .DS_Store
-f1_results.db
+data/f1_results.db
