@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, make_response
+from flask import Blueprint, render_template, request, make_response, send_from_directory
 import json
 import http.client
 
@@ -48,3 +48,14 @@ def error():
     response = make_response(render_template('error.html', error=error))
     response.set_cookie('error', '', expires=0)
     return response
+
+
+@app.route('/docs')
+def swagger_ui():
+    return render_template('swagger_ui.html')
+
+
+@app.route('/spec')
+def get_spec():
+    print(app.root_path)
+    return send_from_directory(app.root_path, 'swagger.yaml')

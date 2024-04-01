@@ -1,0 +1,311 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: F1 WebApp API
+  description: API for managing F1 data 
+basePath: /api
+tags:
+  - name: Results
+    description: Operations related to race results
+  - name: Competitors
+    description: Operations related to competitors
+  - name: Graphs
+    description: Operations related to graphs
+  - name: Metrics
+    description: Operations related to metrics
+paths:
+  /results:
+    get:
+      tags:
+        - Results
+      summary: Get a specific clasification
+      description: Retrieves race clasification for a specific year and race
+      parameters:
+        - name: year
+          in: query
+          description: The year of the clasification
+          required: true
+          type: string
+        - name: race
+          in: query
+          description: The race number
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation. Returns race results.
+          schema:
+            type: array
+            items:
+              type: object
+    post:
+      tags:
+        - Results
+      summary: Update race results
+      description: Updates race results for a specific year
+      parameters:
+        - name: year
+          in: body
+          description: The year to update results for
+          required: true
+          schema:
+            type: object
+            properties:
+              year:
+                type: string
+                example: '2024'
+      responses:
+        '200':
+          description: Successful operation. Returns success message.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Data updated successfully from the web
+        '500':
+          description: Error updating data.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Error al actualizar los datos de la temporada seleccionada
+  /years:
+    get:
+      tags:
+        - Results
+      summary: Get years and races
+      description: Retrieves a list of downloaded years and races
+      responses:
+        '200':
+          description: Successful operation. Returns list of years.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                year:
+                  type: string
+                  example: '2024'
+  /races:
+    get:
+      tags:
+        - Results
+      summary: Get the number of races in a year
+      description: Retrieves the number of races for a specific year
+      parameters:
+        - name: year
+          in: query
+          description: The year to get races for
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation. Returns races for the specified year.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                race:
+                  type: string
+                  example: '1'
+  /competitor/info:
+    get:
+      tags:
+        - Competitors
+      summary: Get competitor information
+      description: Retrieves information about a specific competitor in a year/race
+      parameters:
+        - name: year
+          in: query
+          description: The year of the race
+          required: true
+          type: string
+        - name: race
+          in: query
+          description: The race number
+          required: true
+          type: string
+        - name: driver
+          in: query
+          description: The name of the driver
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation. Returns competitor information.
+          schema:
+            type: object
+            properties:
+              score:
+                type: integer
+                example: 100
+              team:
+                type: string
+                example: 'Ferrari'
+              position:
+                type: integer
+                example: 1
+  /competitor/history:
+    get:
+      tags:
+        - Competitors
+      summary: Get competitor history
+      description: Retrieves the race history of a specific competitor
+      parameters:
+        - name: year
+          in: query
+          description: The year of the race
+          required: true
+          type: string
+        - name: race
+          in: query
+          description: The race number
+          required: true
+          type: string
+        - name: driver
+          in: query
+          description: The name of the driver
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation. Returns competitor race history.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                race:
+                  type: integer
+                  example: 1
+                position:
+                  type: integer
+                  example: 3
+  /competitors/num:
+    get:
+      tags:
+        - Competitors
+      summary: Get number of competitors
+      description: Retrieves the number of competitors in a year
+      parameters:
+        - name: year
+          in: query
+          description: The year to get competitors for
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation. Returns number of competitors.
+          schema:
+            type: integer
+            example: 20
+  /competitors/list:
+    get:
+      tags:
+        - Competitors
+      summary: Get list of competitors
+      description: Retrieves a list of competitors for a specific year
+      parameters:
+        - name: year
+          in: query
+          description: The year to get competitors for
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation. Returns list of competitors.
+          schema:
+            type: array
+            items:
+              type: string
+              example: 'Lewis Hamilton'
+  /graph:
+    get:
+      tags:
+        - Graphs
+      summary: Get graph data
+      description: Retrieves the data for generating a graph in a specified race/year
+      parameters:
+        - name: year
+          in: query
+          description: The year of the race
+          required: true
+          type: string
+        - name: race
+          in: query
+          description: The race number
+          required: true
+          type: string
+        - name: bonus
+          in: query
+          description: Indicates whether to include bonus data
+          required: false
+          type: string
+          enum: ['true', 'false']
+      responses:
+        '200':
+          description: Successful operation. Returns graph.
+          schema:
+            type: string
+            example: '{"data": [...]}' # Example JSON string representing the graph
+  /metrics/ranking:
+    get:
+      tags:
+        - Metrics
+      summary: Get ranking metrics
+      description: Retrieves metrics for a specified race/year
+      parameters:
+        - name: year
+          in: query
+          description: The year of the race
+          required: true
+          type: string
+        - name: race
+          in: query
+          description: The race number
+          required: true
+          type: string
+        - name: bonus
+          in: query
+          description: Indicates whether to include bonus data
+          required: false
+          type: string
+          enum: ['true', 'false']
+      responses:
+        '200':
+          description: Successful operation. Returns ranking metrics.
+          schema:
+            type: object
+            example: {"metric1": 10, "metric2": 20} # Example response with metrics
+  /metrics/season:
+    get:
+      tags:
+        - Metrics
+      summary: Get season metrics
+      description: Retrieves metrics for the entire season
+      parameters:
+        - name: year
+          in: query
+          description: The year of the race
+          required: true
+          type: string
+        - name: race
+          in: query
+          description: The race number
+          required: true
+          type: string
+        - name: bonus
+          in: query
+          description: Indicates whether to include bonus data
+          required: false
+          type: string
+          enum: ['true', 'false']
+      responses:
+        '200':
+          description: Successful operation. Returns season metrics.
+          schema:
+            type: object
+            example: {"metric1": 10, "metric2": 20} # Example response with metrics
