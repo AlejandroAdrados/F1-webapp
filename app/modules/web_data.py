@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup
 from ftfy import fix_text
 import requests
-from ..models import YearResults
-from .. import db
+from app.models import YearResults
+from app import db
 
 
 def load_season(year):
