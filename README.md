@@ -37,6 +37,8 @@
 
 # Guía de Configuración
 
+## Entorno local
+
 Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
 
 1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
@@ -76,5 +78,40 @@ python3 run.py
 ```
 http://localhost:8050
 ```
+
+## Entorno dockerizado
+
+Sigue estos pasos para configurar y ejecutar la aplicación en un contenedor docker:
+
+1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
+
+```bash
+git clone https://github.com/AlejandroAdrados/F1-webapp
+```
+
+2. Navega al directorio del proyecto recién clonado con el siguiente comando:
+
+```bash
+cd F1-webapp
+```
+
+3. Construye la imagen:
+
+```bash
+docker build -t f1-webapp .
+```
+
+4. Ejecuta la imagen construida:
+
+```bash
+docker run -p 8050:8050 --name F1-webapp f1-webapp
+```
+
+5. Abre tu navegador web y accede a la página utilizando la siguiente URL:
+
+```
+http://localhost:8050
+```
+##
 
 ¡Disfruta explorando los fascinantes datos de la Fórmula 1!
