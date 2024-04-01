@@ -2,42 +2,52 @@
 
 ¡Bienvenido a la página Formula 1 Web App! Aquí encontrarás una plataforma completa para explorar y analizar los datos de la Fórmula 1 desde 1960 hasta la actualidad. A continuación, te proporcionamos una guía sobre las principales funcionalidades de esta página.
 
-## Descarga de Datos de Resultados
+### Descarga de Datos de Resultados
 
 - Descarga los datos completos de los resultados de cada temporada de Fórmula 1 desde 1960 hasta la actualidad.
 - Utiliza la sección de "Actualizar Base de Datos" de la parte superior derecha para obtener archivos en formatos compatibles con análisis de datos.
 
-## Consulta de Clasificación
+### Consulta de Clasificación
 
 - Accede a la sección "Clasificación" para consultar la clasificación actualizada hasta cualquier jornada de la temporada descargada.
 
-## Información de Pilotos
+### Información de Pilotos
 
 - Consulta la información detallada de cualquier piloto en una temporada específica.
 - Disfruta de gráficos interactivos que muestran el histórico de posiciones del piloto a lo largo de la temporada.
 
-## Creación y Comparación de Grafos Competitivos
+### Creación y Comparación de Grafos Competitivos
 
 - Crea y compara grafos competitivos ponderados y no ponderados hasta cualquier jornada de la temporada descargada.
 - Analiza el cambio de posiciones entre los pilotos y los grupos de competitivad que se crean a lo largo de una temporada
 
-## Cálculo de Métricas de Competitividad
+### Cálculo de Métricas de Competitividad
 
 - Descubre las métricas de competitividad para una jornada en concreto de una temporada descargada.
 - Obtén insights sobre la competitividad de cada temporada.
 
-## Gráficas Interactivas de Métricas de Competitividad
+### Gráficas Interactivas de Métricas de Competitividad
 
 - Explora gráficas interactivas que destacan las métricas de competitividad de una jornada específica.
 - Compara la competitividad entre los diferentes pilotos
 
-# Requisitos Técnicos
+## Guía de ejecución (Docker requerido)
 
-- Python 3.7 o superior.
+1. Con docker instalado en tu equipo, escribe el siguiente comando en la terminal:
 
-# Guía de Configuración
+```bash
+docker run -p 8050:8050 --name F1-webapp alejandroadrados/f1-webapp:latest
+```
 
-## Entorno local
+2. Abre tu navegador web y accede a la página utilizando la siguiente URL:
+
+```
+http://localhost:8050
+```
+
+## Guía de Configuración para entornos de desarrollo
+
+### Entorno local (Python requerido)
 
 Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
 
@@ -79,7 +89,7 @@ python3 run.py
 http://localhost:8050
 ```
 
-## Entorno dockerizado
+### Entorno dockerizado (Docker requerido)
 
 Sigue estos pasos para configurar y ejecutar la aplicación en un contenedor docker:
 
