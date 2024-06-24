@@ -1,11 +1,11 @@
 from flask import Blueprint, jsonify, request, make_response
 import json
 import os
-from app.modules import web_data as wd
-from app.modules import local_data as ld
-from app.modules import database as db
-from app.modules import graphs as gr
-from app.modules import metrics as mt
+from f1_webapp.application.utils import web_data as wd
+from f1_webapp.infra.database import local_data as ld
+from f1_webapp.infra.database import database as db
+from f1_webapp.modules import graphs as gr
+from f1_webapp.modules import metrics as mt
 
 api = Blueprint('api', __name__, url_prefix='/api')
 

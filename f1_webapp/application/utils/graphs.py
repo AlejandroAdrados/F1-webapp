@@ -1,5 +1,5 @@
 import networkx as nx
-from app.modules import database as db
+from f1_webapp.infra.database import database as db
 import plotly.graph_objs as go
 
 

@@ -17,8 +17,8 @@ def create_app():
 
     db.init_app(app)
 
-    from app.app_routes import app as app_routes
-    from app.api_routes import api as api_routes
+    from f1_webapp.infra.routes.app_routes import app as app_routes
+    from f1_webapp.infra.routes.api_routes import api as api_routes
     app.register_blueprint(app_routes)
     app.register_blueprint(api_routes)
 

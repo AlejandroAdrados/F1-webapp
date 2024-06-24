@@ -1,6 +1,6 @@
 import networkx as nx
 import math
-import app.modules.graphs as graphs
+import f1_webapp.modules.graphs as graphs
 
 # Función que calcula el grado normalizado de un grafo
 def normalized_degree(graph):

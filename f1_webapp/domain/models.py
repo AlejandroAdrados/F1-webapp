@@ -1,4 +1,4 @@
-from . import db
+from f1_webapp import db
 
 
 class YearResults(db.Model):

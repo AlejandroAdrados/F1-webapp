@@ -1,7 +1,7 @@
 import sqlite3
 from sqlalchemy import inspect
-from app.models import YearResults
-from app import db
+from f1_webapp.domain.models import YearResults
+from f1_webapp import db
 
 def verify_db(external_db):
     flask_inspector = inspect(db.engine)
