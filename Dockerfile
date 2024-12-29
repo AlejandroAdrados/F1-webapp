@@ -6,9 +6,7 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY /data ./data
-COPY /app ./app
-COPY run.py .
+COPY . .
 
 EXPOSE 8050
 

@@ -1,5 +1,5 @@
-from ..models import YearResults
-from .. import db
+from app.models import YearResults
+from app import db
 
 
 # Función que devuelve la clasificación de una ranking
