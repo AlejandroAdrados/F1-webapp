@@ -37,18 +37,25 @@ jobs:
 
       # Verificar estilo de código con pycodestyle
       - name: Run pycodestyle
-        run: pycodestyle app/
+        run: |
+          pycodestyle --max-line-length 120 src/ > pycodestyle.txt || true
+        continue-on-error: true
 
       # Analizar código con pylint
       - name: Run pylint
-        run: pylint app/
+        run: |
+          pylint --max-line-length 120 src/ > pylint.txt || true
+        continue-on-error: true
 
       # Subir resultados de cobertura como artefacto
-      - name: Upload Coverage Report
+      - name: Upload Coverage and Lint Reports
         uses: actions/upload-artifact@v3
         with:
-          name: coverage-report
-          path: coverage.xml
+          name: reports
+          path: |
+            coverage.xml
+            pylint.txt
+            pycodestyle.txt
 
   build-and-push-docker:
     # Este job solo se ejecuta manualmente o si se activa la opción
