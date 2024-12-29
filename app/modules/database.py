@@ -1,5 +1,5 @@
-from ..models import YearResults
-from .. import db
+from app.models import YearResults
+from app import db
 
 
 # Función que devuelve la clasificación de una ranking
@@ -86,7 +86,7 @@ def competitor_position_history(driver_name, year, ranking):
 # Función que devuelve la lista de pilotos de un año
 def competitors_list(year):
     result = db.session.query(db.distinct(YearResults.driver_name)).filter(
-        YearResults.year == year).order_by(YearResults.driver_name)
+        YearResults.year == year).order_by(YearResults.driver_name).all()
     serialized_result = [row[0] for row in result]
     return serialized_result
 

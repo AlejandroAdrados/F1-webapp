@@ -33,7 +33,7 @@ jobs:
       # Ejecutar unit tests con pytest
       - name: Run Unit Tests
         run: |
-          pytest --cov=src --cov-report=xml
+          PYTHONPATH=. pytest tests/ --cov=src --cov-report=xml
 
       # Verificar estilo de código con pycodestyle
       - name: Run pycodestyle

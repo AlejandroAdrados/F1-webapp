@@ -2,7 +2,7 @@
     "name": "F1-webapp",
     "build": {
         "context": "..",
-        "dockerfile": "./../Dockerfile"
+        "dockerfile": "./../Dockerfile-Dev"
     },
     "customizations": {
         "vscode": {
@@ -14,10 +14,11 @@
                 "ms-python.vscode-pylance",
                 "ms-python.pylint",
                 "ms-python.python",
-                "ms-python.debugpy"
+                "ms-python.debugpy",
+                "ms-python.black-formatter"
             ]
         }
-    }
+    },
 
     // Características adicionales a añadir al contenedor de desarrollo. Más información: https://containers.dev/features.
     // "features": {},
@@ -32,5 +33,5 @@
      // "customizations": {},
 
     // Descomenta para conectarte como un usuario existente que no sea el predeterminado del contenedor. Más información: https://aka.ms/dev-containers-non-root.
-    // "remoteUser": "devcontainer"
+    "remoteUser": "root"
 }
