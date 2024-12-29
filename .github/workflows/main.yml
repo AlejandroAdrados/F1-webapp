@@ -37,11 +37,11 @@ jobs:
 
       # Verificar estilo de código con pycodestyle
       - name: Run pycodestyle
-        run: pycodestyle src/
+        run: pycodestyle app/
 
       # Analizar código con pylint
       - name: Run pylint
-        run: pylint src/
+        run: pylint app/
 
       # Subir resultados de cobertura como artefacto
       - name: Upload Coverage Report
