@@ -28,7 +28,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov pycodestyle pylint
+          pip install -r requirements/requirements.txt -r requirements/requirements-test.txt
 
       # Ejecutar unit tests con pytest
       - name: Run Unit Tests
