@@ -1,6 +1,8 @@
 import networkx as nx
 from app.modules import database as db
 import plotly.graph_objs as go
+import numpy as np
+
 
 
 # Función que crea un grafo de los cambios de posición de los pilotos en una ranking
@@ -90,8 +92,6 @@ def convert_networkx_to_plotly(G, edge_labels):
 
     node_trace['x'] = []  # Inicializa como lista vacía
     node_trace['y'] = []  # Inicializa como lista vacía
-
-    import numpy as np
 
     for node in G.nodes():
         x, y = pos[node]

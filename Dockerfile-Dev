@@ -1,0 +1,14 @@
+FROM python:3.10
+
+WORKDIR /app
+
+COPY requirements/* .
+
+RUN pip install -r requirements.txt -r requirements-test.txt
+
+COPY /data ./data
+COPY /app ./app
+COPY run.py .
+COPY /tests ./tests
+
+EXPOSE 8050
