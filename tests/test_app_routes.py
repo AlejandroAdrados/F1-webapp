@@ -64,4 +64,4 @@ def test_swagger_ui(client):
 def test_get_spec(client):
     response = client.get('/spec')
     assert response.status_code == 200
-    assert response.content_type == 'application/octet-stream'
+    assert response.content_type == 'application/yaml'
