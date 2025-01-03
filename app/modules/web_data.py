@@ -6,31 +6,32 @@ from app import db
 
 
 def load_season(year):
-    url = f'https://www.formula1.com/en/results.html/{year}/races.html'
-    response = requests.get(url)
+    url = f'https://www.formula1.com/en/results/{year}'
+    response = requests.get(f'{url}/races')
     if response.status_code == 200:
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
         rows = soup.find(
-            'table', {'class': 'resultsarchive-table'}).find('tbody').find_all('tr')
+            'table', {'class': 'f1-table f1-table-with-data w-full'}).find('tbody').find_all('tr')
         counter = 0
         for row in rows:
             counter += 1
-            race_name = row.find('td', {'class': 'dark bold'}).text.strip()
+            race_name = row.find('td', {'class': 'p-normal whitespace-nowrap'}).text.strip()
             race_url = row.find('a')['href']
-            race_url = f'https://www.formula1.com{race_url}'
-            sprint_url = f'{race_url[:-16]}sprint-results.html'
+            race_url = f'{url}/{race_url}'
+            sprint_url = f'{race_url[:-12]}/sprint-results'
             existing_result = YearResults.query.filter_by(
                 year=year, race_name=race_name).first()
             race_info = {"year": year, "number": counter, "name": race_name}
-            response_race = requests.get(race_url)
 
             if not existing_result:
-                if response_race.status_code == 200:
-                    html_race = response_race.text
-                    race_content = BeautifulSoup(html_race, 'html.parser')
-                    sprint_content = is_sprint_race(sprint_url)
-                    get_results(race_content, sprint_content, race_info)
+                race_content = get_table_results_content(race_url)
+                sprint_content = get_table_results_content(sprint_url)
+                if not sprint_content.find('table', {'class': 'f1-table f1-table-with-data w-full'}):
+                    sprint_content = None
+
+                get_results(race_content, sprint_content, race_info)
+
         initialize_result(year, len(rows))
         if not existing_result:
             print(f"Year {year} races data added")
@@ -42,17 +43,11 @@ def load_season(year):
         return False
 
 
-def is_sprint_race(url):
-    response_sprint = requests.get(url)
-    if response_sprint.status_code == 200:
-        html_sprint = response_sprint.text
-        soup_sprint = BeautifulSoup(html_sprint, 'html.parser')
-        ul_tag = soup_sprint.find('ul', class_='resultsarchive-side-nav')
-        if ul_tag:
-            list_items = ul_tag.find_all('li', class_='side-nav-item')
-            for item in list_items:
-                if "sprint" in item.get_text().lower():
-                    return soup_sprint
+def get_table_results_content(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        html = response.text
+        return BeautifulSoup(html, 'html.parser')
     return None
 
 
@@ -78,15 +73,15 @@ def initialize_result(year, ranking):
 
 
 def get_results(race_content, sprint_content, race_info):
-    table_race = race_content.find('table', {'class': 'resultsarchive-table'})
+    table_ref = {'class': 'f1-table f1-table-with-data w-full'}
+    table_race = race_content.find('table', table_ref)
     if table_race:
         race_rows = table_race.find('tbody').find_all('tr')
         for race_row in race_rows:
             driver_info = extract_info_from_row(race_row)
             points = float(driver_info.get("points"))
             if sprint_content:
-                sprint_table = sprint_content.find(
-                    'table', {'class': 'resultsarchive-table'})
+                sprint_table = sprint_content.find('table', table_ref)
                 if sprint_table:
                     sprint_rows = sprint_table.find('tbody').find_all('tr')
                     for row_sprint in sprint_rows:
@@ -99,11 +94,11 @@ def get_results(race_content, sprint_content, race_info):
 
 def extract_info_from_row(row):
     cells = row.find_all('td')
-    position = cells[1].text.strip()
-    driver_name = cells[3].text.strip().replace('\n', ' ')[:-4]
+    position = cells[0].text.strip()
+    driver_name = cells[2].text.strip().replace('\n', ' ')[:-3]
     driver_name = fix_text(driver_name)
-    team = cells[4].text.strip()
-    points = cells[7].text.strip()
+    team = cells[3].text.strip()
+    points = cells[6].text.strip()
     return {"position": position, "name": driver_name, "team": team, "points": points}
 
 

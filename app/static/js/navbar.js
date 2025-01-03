@@ -19,7 +19,7 @@ function updateYearToOptions() {
     yearToSelect.innerHTML = '<option value="">Selecciona una opción</option>';
   }
   else {
-    for (let year = yearFrom; year <= 2023; year++) {
+    for (let year = yearFrom; year <= 2024; year++) {
       yearToSelect.innerHTML += `<option value="${year}">${year}</option>`;
     }
   }
