@@ -78,9 +78,9 @@ jobs:
       # Build de la imagen Docker
       - name: Build Docker Image
         run: |
-          docker build -t my-private-repo/my-python-app:latest .
+          docker build -t alejandroadrados/f1-webapp:latest .
 
       # Push de la imagen Docker
       - name: Push Docker Image
         run: |
-          docker push my-private-repo/my-python-app:latest
+          docker push alejandroadrados/f1-webapp:latest
