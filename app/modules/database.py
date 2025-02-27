@@ -1,10 +1,24 @@
-from app.models import YearResults
+"""
+Functions to query the database and return results.
+"""
+
 from app import db
+from app.models import YearResults
 
 
-# Función que devuelve la clasificación de una ranking
 def total_ranking(year, ranking):
-    results = db.session.query(YearResults.driver_name, YearResults.team, db.func.SUM(YearResults.points).label('total_points')) \
+    """
+    Returns the classification of a ranking.
+
+    Args:
+        year (int): The year of the season
+        ranking (int): The race number to calculate rankings up to
+
+    Returns:
+        list: List of dictionaries containing driver name, team and total points
+    """
+    results = db.session.query(YearResults.driver_name, YearResults.team,
+                               db.func.SUM(YearResults.points).label('total_points')) \
         .filter(YearResults.year == year, YearResults.race_number <= ranking) \
         .group_by(YearResults.driver_name) \
         .order_by(db.func.SUM(YearResults.points).desc()) \
@@ -17,8 +31,13 @@ def total_ranking(year, ranking):
     return serialized_results
 
 
-# Función que devuelve el año y el número de temporadas que hay en la bbdd
 def get_info():
+    """
+    Returns the years and number of seasons in the database.
+
+    Returns:
+        list: List of dictionaries containing year and number of races for each season
+    """
     results = db.session.query(
         YearResults.year,
         db.func.max(YearResults.race_number).label('max_num_race')
@@ -30,15 +49,33 @@ def get_info():
     return serialized_results
 
 
-# Función que devuelve el número de carrearas de un año
 def get_races(year):
+    """
+    Returns the number of races in a year.
+
+    Args:
+        year (int): The year to query
+
+    Returns:
+        int: Number of races in the specified year
+    """
     result = db.session.query(db.func.max(YearResults.race_number)).filter(
         YearResults.year == year).scalar()
     return result
 
 
-# Función que devuelve los puntos de un piloto en una ranking
 def competitor_score_in_ranking(driver_name, year, race_number):
+    """
+    Returns a driver's points in a specific ranking.
+
+    Args:
+        driver_name (str): Name of the driver
+        year (int): Season year
+        race_number (int): Race number to calculate points up to
+
+    Returns:
+        float: Total points for the driver, 0 if no results found
+    """
     result = db.session.query(db.func.sum(YearResults.points)).\
         filter(YearResults.driver_name == driver_name).\
         filter(YearResults.year == year).\
@@ -46,24 +83,41 @@ def competitor_score_in_ranking(driver_name, year, race_number):
         scalar()
     if result:
         return result
-    else:
-        return 0
+    return 0
 
 
-# Función que devuelve el equipo de un piloto en una temporada
 def competitor_team_in_year(driver_name, year):
+    """
+    Returns a driver's team in a specific season.
+
+    Args:
+        driver_name (str): Name of the driver
+        year (int): Season year
+
+    Returns:
+        str: Team name, None if not found
+    """
     result = db.session.query(YearResults.team).\
         filter(YearResults.driver_name == driver_name).\
         filter(YearResults.year == year).\
         first()
     if result:
         return result[0]
-    else:
-        return None
+    return None
 
 
-# Función que devuelve la posición de un piloto en una clasificación
 def competitor_position_in_ranking(driver_name, year, ranking):
+    """
+    Returns a driver's position in a specific ranking.
+
+    Args:
+        driver_name (str): Name of the driver
+        year (int): Season year
+        ranking (int): Race number to calculate position up to
+
+    Returns:
+        int: Position of the driver, None if not found
+    """
     results = total_ranking(year, ranking)
     sorted_results = sorted(
         results, key=lambda x: x['total_points'], reverse=True)
@@ -72,8 +126,18 @@ def competitor_position_in_ranking(driver_name, year, ranking):
     return position
 
 
-# Función que devuelve el histórico de pilotos que ocupan una posición hasta una ranking
 def competitor_position_history(driver_name, year, ranking):
+    """
+    Returns the historical positions of a driver up to a specific ranking.
+
+    Args:
+        driver_name (str): Name of the driver
+        year (int): Season year
+        ranking (int): Race number to calculate history up to
+
+    Returns:
+        list: List of dictionaries containing race number and position
+    """
     history = []
     i = 0
     for rank in range(1, ranking+1):
@@ -83,25 +147,50 @@ def competitor_position_history(driver_name, year, ranking):
     return history
 
 
-# Función que devuelve la lista de pilotos de un año
 def competitors_list(year):
+    """
+    Returns the list of drivers in a year.
+
+    Args:
+        year (int): Season year
+
+    Returns:
+        list: List of driver names
+    """
     result = db.session.query(db.distinct(YearResults.driver_name)).filter(
         YearResults.year == year).order_by(YearResults.driver_name).all()
     serialized_result = [row[0] for row in result]
     return serialized_result
 
 
-# Función que devuelve el número de pilotos de un año
 def num_competitors(year):
+    """
+    Returns the number of drivers in a year.
+
+    Args:
+        year (int): Season year
+
+    Returns:
+        int: Number of competitors, 0 if no data found
+    """
     competitors = competitors_list(year)
     if competitors:
         return len(competitors)
-    else:
-        return 0
+    return 0
 
 
-# Función que devuelve los pilotos por encima de un piloto en una ranking
 def competitors_below(driver_name, year, ranking):
+    """
+    Returns the drivers below a specific driver in a ranking.
+
+    Args:
+        driver_name (str): Name of the driver
+        year (int): Season year
+        ranking (int): Race number to calculate positions from
+
+    Returns:
+        list: List of driver names that are below the specified driver
+    """
     results = total_ranking(year, ranking)
     position = competitor_position_in_ranking(driver_name, year, ranking)
     sorted_results = sorted(
@@ -109,20 +198,39 @@ def competitors_below(driver_name, year, ranking):
     return [result['driver_name'] for result in sorted_results[position:]]
 
 
-# Función que devuelve los pilotos por encima de un piloto en una ranking
 def competitors_above(driver_name, year, ranking):
+    """
+    Returns the drivers above a specific driver in a ranking.
+
+    Args:
+        driver_name (str): Name of the driver
+        year (int): Season year
+        ranking (int): Race number to calculate positions from
+
+    Returns:
+        list: List of driver names that are above the specified driver, None if driver not found
+    """
     results = total_ranking(year, ranking)
     position = competitor_position_in_ranking(driver_name, year, ranking)
     if position:
         sorted_results = sorted(
             results, key=lambda x: x['total_points'], reverse=True)
         return [result['driver_name'] for result in sorted_results[:position - 1]]
-    else:
-        return None
+    return None
 
 
-# Función que devuelve el piloto que ocupa una posición en una ranking
 def competitor_in_position_in_ranking(position, ranking, year):
+    """
+    Returns the driver in a specific position in a ranking.
+
+    Args:
+        position (int): Position to query
+        ranking (int): Race number to calculate position from
+        year (int): Season year
+
+    Returns:
+        str: Driver name in the specified position, None if not found
+    """
     competitor = (
         db.session.query(YearResults.driver_name, db.func.sum(
             YearResults.points).label('total_points'))
@@ -135,12 +243,20 @@ def competitor_in_position_in_ranking(position, ranking, year):
     )
     if competitor:
         return competitor[0]
-    else:
-        return None
+    return None
 
 
-# Función que devuelve los cambios de posición entre dos rankings
 def positions_swaps_in_ranking(year, ranking):
+    """
+    Returns position changes between two consecutive rankings.
+
+    Args:
+        year (int): Season year
+        ranking (int): Race number to analyze changes from
+
+    Returns:
+        list: List of tuples containing current position, driver name, and overtaken competitors
+    """
     result = []
     competitors_number = num_competitors(year)
     for i in range(1, competitors_number):
@@ -164,8 +280,17 @@ def positions_swaps_in_ranking(year, ranking):
     return result
 
 
-# Función que devuelve los cambios de posición hasta una ranking
 def positions_swaps_until_ranking(year, ranking):
+    """
+    Returns position changes up to a specific ranking.
+
+    Args:
+        year (int): Season year
+        ranking (int): Race number to analyze changes up to
+
+    Returns:
+        list: List of position changes for each race up to the specified ranking
+    """
     result = []
     for i in range(2, ranking+1):
         result.append(positions_swaps_in_ranking(year, i))

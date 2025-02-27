@@ -1,11 +1,25 @@
+"""
+Initialize the Flask application.
+"""
+import os
+
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-import os
 
 db = SQLAlchemy()
 
 
 def create_app():
+    """
+    Create and configure the Flask application.
+
+    This function sets up the Flask application, configures the database URI,
+    initializes the database, registers blueprints for application routes and
+    API routes, and defines a custom error handler for 404 errors.
+
+    Returns:
+        Flask: The configured Flask application instance.
+    """
     basedir = os.path.abspath(os.path.dirname(__file__))
     rootdir = os.path.abspath(os.path.join(basedir, os.pardir))
 
@@ -17,8 +31,8 @@ def create_app():
 
     db.init_app(app)
 
-    from app.app_routes import app as app_routes
     from app.api_routes import api as api_routes
+    from app.app_routes import app as app_routes
     app.register_blueprint(app_routes)
     app.register_blueprint(api_routes)
 
