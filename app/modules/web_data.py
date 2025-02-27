@@ -1,13 +1,26 @@
+"""
+Functions to load and process Formula 1 web data
+"""
+import requests
 from bs4 import BeautifulSoup
 from ftfy import fix_text
-import requests
-from app.models import YearResults
+
 from app import db
+from app.models import YearResults
 
 
 def load_season(year):
+    """
+    Loads the race data for a given Formula 1 season year from the official Formula 1 website.
+
+    Args:
+        year (int): The year of the Formula 1 season to load.
+
+    Returns:
+        bool: True if the data was successfully loaded and processed, False otherwise.
+    """
     url = f'https://www.formula1.com/en/results/{year}'
-    response = requests.get(f'{url}/races')
+    response = requests.get(f'{url}/races', timeout=10)
     if response.status_code == 200:
         html = response.text
         soup = BeautifulSoup(html, 'html.parser')
@@ -39,12 +52,21 @@ def load_season(year):
             print(f"Year {year} races data updated")
         db.session.commit()
         return True
-    else:
-        return False
+    return False
 
 
 def get_table_results_content(url):
-    response = requests.get(url)
+    """
+    Fetches and parses the HTML content of a table from the given URL.
+
+    Args:
+        url (str): The URL of the web page to fetch the table content from.
+
+    Returns:
+        BeautifulSoup: Parsed HTML content of the table if the request is successful.
+        None: If the request fails (status code is not 200).
+    """
+    response = requests.get(url, timeout=10)
     if response.status_code == 200:
         html = response.text
         return BeautifulSoup(html, 'html.parser')
@@ -52,6 +74,17 @@ def get_table_results_content(url):
 
 
 def add_sprint_points(driver, race, points):
+    """
+    Adds sprint points to a driver's result for a specific race.
+
+    Args:
+        driver (str): The name of the driver.
+        race (str): The name of the race.
+        points (int): The number of points to add.
+
+    Returns:
+        None
+    """
     result = YearResults.query.filter_by(
         driver_name=driver, race_name=race).first()
     if result:
@@ -59,6 +92,20 @@ def add_sprint_points(driver, race, points):
 
 
 def initialize_result(year, ranking):
+    """
+    Initializes the race results for a given year and ranking.
+
+    This function queries the database for driver names and their respective teams
+    for a specific year and up to a certain ranking. It then initializes race information
+    and adds the result for each driver.
+
+    Args:
+        year (int): The year for which the race results are being initialized.
+        ranking (int): The ranking up to which the race results are considered.
+
+    Returns:
+        The result of adding the race information and driver information to the database.
+    """
     results = (
         db.session.query(YearResults.driver_name, YearResults.team)
         .filter(YearResults.year == year, YearResults.race_number <= ranking)
@@ -73,6 +120,17 @@ def initialize_result(year, ranking):
 
 
 def get_results(race_content, sprint_content, race_info):
+    """
+    Extracts race and sprint results, calculates total points for each driver, and adds the results to race_info.
+
+    Args:
+        race_content (BeautifulSoup): Parsed HTML content of the race results page.
+        sprint_content (BeautifulSoup): Parsed HTML content of the sprint results page (can be None).
+        race_info (dict): Dictionary to store the results of the race.
+
+    Returns:
+        None
+    """
     table_ref = {'class': 'f1-table f1-table-with-data w-full'}
     table_race = race_content.find('table', table_ref)
     if table_race:
@@ -93,6 +151,19 @@ def get_results(race_content, sprint_content, race_info):
 
 
 def extract_info_from_row(row):
+    """
+    Extracts information from a table row element.
+
+    Args:
+        row (bs4.element.Tag): A BeautifulSoup Tag object representing a table row.
+
+    Returns:
+        dict: A dictionary containing the extracted information with keys:
+            - "position" (str): The position of the driver.
+            - "name" (str): The name of the driver.
+            - "team" (str): The team of the driver.
+            - "points" (str): The points scored by the driver.
+    """
     cells = row.find_all('td')
     position = cells[0].text.strip()
     driver_name = cells[2].text.strip().replace('\n', ' ')[:-3]
@@ -103,6 +174,17 @@ def extract_info_from_row(row):
 
 
 def add_result(race_info, driver_info, points):
+    """
+    Adds a new race result to the database.
+
+    Args:
+        race_info (dict): A dictionary containing race information with keys "year", "number", and "name".
+        driver_info (dict): A dictionary containing driver information with keys "position", "name", and "team".
+        points (int): The number of points the driver earned in the race.
+
+    Returns:
+        None
+    """
     new_result = YearResults(
         year=race_info.get("year"),
         race_number=race_info.get("number"),

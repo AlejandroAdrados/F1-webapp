@@ -1,9 +1,25 @@
+"""
+Functions to verify, retrieve and update data from an external SQLite database.
+"""
+
 import sqlite3
+
 from sqlalchemy import inspect
-from app.models import YearResults
+
 from app import db
+from app.models import YearResults
+
 
 def verify_db(external_db):
+    """
+    Verifies if the tables in the external SQLite database match the tables in the internal Flask SQLAlchemy database.
+
+    Args:
+        external_db (str): The file path to the external SQLite database.
+
+    Returns:
+        bool: True if the tables in the external database match the tables in the internal database, False otherwise.
+    """
     flask_inspector = inspect(db.engine)
     internal_db_tables = set(flask_inspector.get_table_names())
     conn = sqlite3.connect(external_db)
@@ -16,6 +32,15 @@ def verify_db(external_db):
 
 
 def get_seasons(external_db):
+    """
+    Retrieve distinct seasons (years) from the external database.
+
+    Args:
+        external_db (str): The file path to the external SQLite database.
+
+    Returns:
+        list of tuple: A list of tuples, each containing a distinct year from the 'year_results' table.
+    """
     conn_external = sqlite3.connect(external_db)
     cursor_external = conn_external.cursor()
     cursor_external.execute("SELECT DISTINCT year FROM year_results")
@@ -25,6 +50,16 @@ def get_seasons(external_db):
 
 
 def update_db(external_db):
+    """
+    Updates the local database with data from an external SQLite database.
+
+    Args:
+        external_db (str): The file path to the external SQLite database.
+
+    The function connects to the external database, retrieves all records from the 'year_results' table,
+    and updates the local database accordingly. If a record with the same ID exists in the local database,
+    it updates the existing record. If not, it creates a new record. Finally, it commits all changes to the database.
+    """
     conn_external = sqlite3.connect(external_db)
     cursor_external = conn_external.cursor()
     cursor_external.execute("SELECT * FROM year_results")
@@ -41,7 +76,7 @@ def update_db(external_db):
             year_result.team = result[6]
             year_result.points = result[7]
         else:
-            year_result = YearResults(id=result[0], year=result[1], race_number=result[2], race_name=result[3], 
-                                       position=result[4], driver_name=result[5], team=result[6], points=result[7])
+            year_result = YearResults(id=result[0], year=result[1], race_number=result[2], race_name=result[3],
+                                      position=result[4], driver_name=result[5], team=result[6], points=result[7])
             db.session.add(year_result)
     db.session.commit()
