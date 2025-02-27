@@ -10,13 +10,13 @@
     <div class="col-md-12">
         <div class="info-box">
             <div class="info-title">
-                Grado Normalizado &nbsp;
+                Grado Medio Normalizado &nbsp;
                 <i class="bi bi-info-circle info-icon" title="Información"></i>
             </div>
             <div class="info-content">
-                <p>El grado medio normalizado es una medida que indica qué
-                    tan conectado está un punto en una red en comparación
-                    con el máximo posible de conexiones que podría tener.</p>
+                <p>El Grado Medio Normalizado es una medida que indica la proporción de intercambios de posiciones 
+                    entre competidores. Esta se calcula como la suma de conexiones reales en el grafo dividida por el 
+                    máximo número posible de conexiones.</p>
             </div>
             <div class="progress-bar-container">
                 <span class="info-value" id="normalized-degree"></span>
@@ -29,11 +29,13 @@
     <div class="col-md-12">
         <div class="info-box">
             <div class="info-title">
-                Peso Normalizado:
+                Peso Medio Normalizado:
                 <i class="bi bi-info-circle info-icon" title="Información"></i>
             </div>
             <div class="info-content">
-                <p>Información sobre Peso Normalizado...</p>
+                <p>El Peso Medio Normalizado es una métrica que mide la intensidad acumulada de cambios, obtenida al 
+                    sumar cuántas veces cada par de competidores intercambia posiciones y normalizar este total 
+                    respecto al máximo teórico.</p>
             </div>
             <div class="progress-bar-container">
                 <span class="info-value" id="normalized-weight"></span>
@@ -50,7 +52,9 @@
                 <i class="bi bi-info-circle info-icon" title="Información"></i>
             </div>
             <div class="info-content">
-                <p>Información sobre el Coeficiente de Clustering...</p>
+                <p>El Coeficiente de Clustering es una métrica que indica la tendencia de los competidores a formar 
+                    grupos o “cliques”, evaluando qué tan conectados están entre sí los vecinos de cada competidor
+                     en el grafo.</p>
             </div>
             <div class="progress-bar-container">
                 <span class="info-value" id="clustering-coefficient"></span>
@@ -64,11 +68,13 @@
     <div class="col-md-12">
         <div class="info-box">
             <div class="info-title">
-                Coeficiente de Kendall:
+                Coeficiente de Correlación de Kendall Generalizado:
                 <i class="bi bi-info-circle info-icon" title="Información"></i>
             </div>
             <div class="info-content">
-                <p>Información sobre el Coeficiente de Kendall...</p>
+                <p>El Coeficiente de Correlación de Kendall Generalizado es una métrica que indica de la concordancia 
+                    entre dos clasificaciones, que mide el grado en que los pares de competidores mantienen o 
+                    invierten su orden respecto al total de pares posibles.</p>
             </div>
             <div class="progress-bar-container">
                 <span class="info-value" id="kendall"></span>
@@ -82,11 +88,13 @@
     <div class="col-md-12">
         <div class="info-box">
             <div class="info-title">
-                Coeficiente de Kendall Evolutivo:
+                Coeficiente de Correlación de Kendall Evolutivo:
                 <i class="bi bi-info-circle info-icon" title="Información"></i>
             </div>
             <div class="info-content">
-                <p>Información sobre el Coeficiente de Kendall Evolutivo...</p>
+                <p>El Coeficiente de Correlación de Kendall Evolutivo es la versión dinámica del coeficiente de Kendall 
+                    Generalizado que incorpora la frecuencia de los intercambios de posiciones a lo largo del tiempo, 
+                    reflejando así la evolución de la competitividad.</p>
             </div>
             <div class="progress-bar-container">
                 <span class="info-value" id="evolutionary-kendall"></span>
