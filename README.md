@@ -47,6 +47,33 @@ http://localhost:8050
 
 ## Guía de Configuración para entornos de desarrollo
 
+### Make en entorno local (Make y Python requeridos)
+
+Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
+
+1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
+
+```bash
+git clone https://github.com/AlejandroAdrados/F1-webapp
+```
+
+2. Navega al directorio del proyecto recién clonado con el siguiente comando:
+
+```bash
+cd F1-webapp
+```
+
+3. Ejecuta el comando run del fichero makefile
+```bash
+make run
+```
+
+4. Abre tu navegador web y accede a la página utilizando la siguiente URL:
+
+```
+http://localhost:8050
+```
+
 ### Entorno local (Python requerido)
 
 Sigue estos pasos para configurar y ejecutar la aplicación en tu entorno local:
